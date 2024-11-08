@@ -1,0 +1,15 @@
+= turbo_frame_tag 'toasts'
+  .toast-container.top-0.end-0.p-3
+    - flash.each_with_index do |(type, object), i|
+      - object = object if object.is_a?(Toast)
+      - object = Toast.new(object) if object.is_a?(String)
+      - object = Toast.new(object['message'], delay: object['delay'] || Toast::DELAY) if object.is_a?(Hash)
+
+      .toast.show.align-items-center.text-bg-primary.border-0.opacity-75 [role="alert"
+                        aria-live="assertive"
+                        aria-atomic="true"
+                        data-controller="toast"
+                        class="#{toast_class(type)}"]
+        .d-flex
+          .toast-body = object
+          button.btn-close.btn-close-white.me-2.m-auto data-bs-dismiss="toast" aria-label="Close" data-action="click->toast#hide"

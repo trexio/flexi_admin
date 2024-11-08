@@ -1,0 +1,8 @@
+.form-check.bulk-action-checkbox
+  input [class="form-check-input"
+         type="checkbox"
+         value="#{id}"
+         id="checkbox-#{id}"
+         name="#{scope}"
+         data-action="#{select_all ? 'change->bulk-action#toggleAll' : 'change->bulk-action#toggle'}"]
+  = content

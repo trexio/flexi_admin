@@ -1,0 +1,12 @@
+turbo-frame [id="#{context.scope}"
+             data-controller="bulk-action"
+             data-bulk-action-scope-value="#{context.scope}"]
+  = helpers.turbo_frame_tag "modalx_#{context.scope}", 'data-turbo-temporary': true
+  .h2 = title
+  .py-2.d-flex.justify-content-between.align-items-center
+    .d-flex.gap-3
+      = actions
+    - if context.paginate?
+      = render Resources::PaginationComponent.new(context, per_page: context.params.per_page, page: context.params.page)
+  .py-2
+    = views

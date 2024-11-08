@@ -1,0 +1,20 @@
+// Header
+.d-flex.justify-content-between
+  h1 = resource.title
+  // Akce
+  div.actions
+    .d-flex.gap-2
+      = actions
+      .btn-group
+        .btn.btn-outline-primary [data-controller="form"
+                                  data-form-resource-path-value="#{edit_resource_path(resource)}"
+                                  data-action="click->form#enable"]
+          i.bi.bi-pencil-square
+        .btn.btn-outline-danger
+          i.bi.bi-trash
+
+.row.g-0.my-4
+  .col-12.col-md-8
+    = form
+
+= content

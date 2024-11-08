@@ -1,0 +1,14 @@
+- if results.size.positive?
+  - results.each do |result|
+    li [data-action="#{data_action}"
+        data-autocomplete-resource-id-value="#{result.try(:id)}"]
+      - if action == 'show'
+        = link_to send(path, result.id), class: 'text-primary text-decoration-none' do
+          = value(result)
+      - else
+        = value(result)
+  - if autocomplete? && results_count > 100
+    li.text-muted zobrazeno 10 z #{results_count} výsledků
+
+- if results.empty? && autocomplete?
+  li žádné výsledky hledání

@@ -1,0 +1,7 @@
+button.dropdown-item.bulk-action [class="#{css_utility_classes}"
+                                  data-action="click->bulk-action#requestModal"
+                                  data-scope="#{context.scope}"
+                                  data-url-with-id="#{scoped_url_with_modal_id}"]
+  - if modal_class.button_icon.present?
+    i.bi.me-2 class="#{modal_class.button_icon_class}"
+  = modal_class.button_text

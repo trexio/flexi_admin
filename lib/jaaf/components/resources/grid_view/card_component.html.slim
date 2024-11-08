@@ -1,0 +1,18 @@
+.card style="width: 18rem;"
+  = render(Actions::CheckboxComponent.new(id: resource.id, scope: resource.class.name.downcase))
+  div
+    - if media?
+      = render_media
+    - else
+      .d-flex.w-100.h-100.justify-content-center.align-items-center.bg-light style="min-height: 180px;"
+        i.bi.bi-card-image.h2.text-secondary
+  .card-body
+    - if header
+      h6.card-subtitle.mb-2.text-muted
+        = header_value
+
+    - if title
+      h5.card-title
+        = navigate_to title_value, resource
+
+    p.card-text = description_value

@@ -1,0 +1,26 @@
+// Customized accordion for read-only mode
+.trix-container {
+  .collapsed {
+    max-height: 80px !important;
+    overflow: hidden !important;
+    transition: max-height 0.3s ease, overflow 0.3s ease; // Added transition
+  }
+
+  .expanded {
+    max-height: none !important;
+    overflow: visible !important;
+    transition: max-height 0.3s ease, overflow 0.3s ease; // Added transition
+  }
+
+  .trigger {
+    cursor: pointer;
+    font-weight: 600;
+    color: rgba(var(----bs-link-color-rgb), var(----bs-link-opacity, 1));
+    margin-bottom: 10px;
+  }
+
+  .text {
+    cursor: default;
+
+  }
+}

@@ -1,0 +1,24 @@
+.autocomplete [data-controller="datalistx"
+               data-datalist-search-path-value="#{datalist_path(action:, attribute: :description)}"]
+  .input-group
+    .input-group-text id="button-addon1"
+      i.bi.bi-search
+    input [type="text"
+          name="datalist"
+          list="#{scope}_datalist"
+          class="form-control"
+          placeholder="hledat"
+          data-datalist-target="input"
+          data-action="keyup->datalist#keyup"
+          data-is-disabled="#{disabled}"
+          value="#{resource&.ac_title}"]
+    datalist [id="#{scope}_datalist" data-datalist-target="datalist"]
+      option value="This is a test"
+    input [type="hidden"
+          name="#{resource_input_name}"
+          data-datalist-target="resourceId"
+          value="#{resource&.id}"]
+    .clear-icon.d-none data-datalist-target="clearIcon" data-action="click->autocomplete#clear"
+      i.bi.bi-x-circle.me-2
+    .loading-icon.d-none data-datalist-target="loadingIcon"
+      .icon

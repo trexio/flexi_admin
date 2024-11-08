@@ -1,0 +1,25 @@
+.button-select {
+  .btn {
+    &.selected {
+      &:not(.disabled) {
+        @extend .btn-primary;
+      }
+
+      &.disabled {
+        @extend .btn-outline-secondary;
+        color: var(--bs-body-color);
+        font-weight: 600;
+      }
+    }
+
+    &:not(.selected) {
+      &:not(.disabled) {
+        @extend .btn-outline-primary;
+      }
+
+      &.disabled {
+        @extend .btn-outline-secondary;
+      }
+    }
+  }
+}

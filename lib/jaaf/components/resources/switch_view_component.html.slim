@@ -1,0 +1,16 @@
+.btn-group role="group"
+  - if list_view_available?
+    - path = helpers.merge_params(resources_path(**context.params.to_params), x_view: 'list', x_scope: context.scope, x_frame: context.scope)
+    .btn.btn-primary.opacity-75 [class="#{list_class}"
+                                 data-controller="switch-view"
+                                 data-action="click->switch-view#switch"
+                                 data-switch-view-resource-path-value="#{path}"]
+      i.bi.bi-list-ul
+
+  - if grid_view_available?
+    - path = helpers.merge_params(resources_path(**context.params.to_params), x_view: 'grid', x_scope: context.scope, x_frame: context.scope)
+    .btn.btn-primary.opacity-75 [class="#{grid_class}"
+                                 data-controller="switch-view"
+                                 data-action="click->switch-view#switch"
+                                 data-switch-view-resource-path-value="#{path}"]
+      i.bi.bi-grid

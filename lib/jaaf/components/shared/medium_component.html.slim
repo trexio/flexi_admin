@@ -1,0 +1,7 @@
+- if media?
+  = render_media
+- else
+  - if preview_missing.present?
+    = preview_missing
+  - else
+    = render EmptyImageComponent.new('Náhled není k dispozici')

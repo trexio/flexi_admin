@@ -1,0 +1,11 @@
+div data-bulk-action-scope-value="#{scope}"
+  .dropdown
+    button.btn.btn-outline-secondary.dropdown-toggle [type="button"
+                                                      data-bs-toggle="dropdown"
+                                                      aria-expanded="false"
+                                                      aria-haspopup="true"]
+      | Akce
+    ul.dropdown-menu
+      - actions.each do |action|
+        li
+          = action

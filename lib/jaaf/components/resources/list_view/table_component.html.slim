@@ -1,0 +1,14 @@
+.row.fw-bold.text-muted.py-2
+  - if selectable?
+    .col-auto
+      = render(Actions::CheckboxComponent.new(id: 'all', scope: context.scope, select_all: true))
+  - columns.each do |column|
+    = render Shared::Table::HeaderItemComponent.new(column)
+
+- resources.each do |resource|
+  .row.border-top.py-2
+    - if selectable?
+      .col-auto
+        = render(Actions::CheckboxComponent.new(id: resource.id, scope: context.scope))
+    - columns.each do |column|
+      = render Resources::ListView::CellComponent.new(column.formatted_value(column.value[resource]), **column.options)

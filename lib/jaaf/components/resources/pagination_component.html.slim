@@ -1,0 +1,33 @@
+nav data-controller="pagination"
+  ul.pagination.m-0.p-0
+    li.page-item class="#{paginated_resources.previous_page ? '' : 'disabled'}"
+      - if paginated_resources.previous_page
+        = link_to page_path(paginated_resources.previous_page),
+                  class: 'page-link',
+                  data: { action: 'click->pagination#paginate',
+                          resource_path: page_path(paginated_resources.previous_page) } do
+          '←
+      - else
+        span.page-link ←
+
+    - limited_pages.each do |page|
+      - if page == paginated_resources.current_page
+        li.page-item.active
+          span.page-link = page
+      - else
+        li.page-item
+          = link_to page_path(page),
+                    class: 'page-link',
+                    data: { action: 'click->pagination#paginate',
+                            resource_path: page_path(page) } do
+            = page
+
+    li.page-item class="#{paginated_resources.next_page ? '' : 'disabled'}"
+      - if paginated_resources.next_page
+        = link_to page_path(paginated_resources.next_page),
+                  class: 'page-link',
+                  data: { action: 'click->pagination#paginate',
+                          resource_path: page_path(paginated_resources.next_page) } do
+          '→
+      - else
+        span.page-link →

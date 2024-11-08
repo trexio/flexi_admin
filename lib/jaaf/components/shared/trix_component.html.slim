@@ -1,0 +1,22 @@
+.trix-container.collapsed [data-controller="trix"
+                           data-trix-disabled-value="#{disabled}"
+                           data-trix-collapsed-value="true"]
+  - if disabled && value.present?
+    .collapsed data-trix-target="container"
+      - if short_text?
+        = value&.html_safe
+      - else
+        span.trigger [type="button"
+                      data-trix-target="trigger"
+                      data-action="click->trix#toggleCollapse"]
+          | rozbalit
+        span.text data-trix-target="text"
+          = value&.html_safe
+
+  - if !disabled
+    input [type="hidden"
+          name="#{attr_name}"
+          value="#{value}"
+          id="#{element_id}"]
+    trix-editor [input="#{element_id}"
+                 data-trix-target="editor"]
