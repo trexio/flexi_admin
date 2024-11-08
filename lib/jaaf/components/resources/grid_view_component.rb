@@ -2,10 +2,10 @@
 
 # Dependent component, context required.
 class Resources::GridViewComponent < ViewComponent::Base
-  include Helpers::ValueFormatter
-  include Helpers::ResourceHelper
-  include Helpers::Selectable
-  include Helpers::LinkHelper
+  include Jaaf::Components::Helpers::ValueFormatter
+  include Jaaf::Components::Helpers::ResourceHelper
+  include Jaaf::Components::Helpers::Selectable
+  include Jaaf::Components::Helpers::LinkHelper
 
   class Element < Struct.new(:attribute, :value, :options)
     include Rails.application.routes.url_helpers
@@ -51,8 +51,8 @@ class Resources::GridViewComponent < ViewComponent::Base
   end
 
   def render?
-    context.params.current_view == 'grid' ||
-      (context.views.first == 'grid' && context.params.current_view.blank?)
+    context.params.current_view == "grid" ||
+      (context.views.first == "grid" && context.params.current_view.blank?)
   end
 
   def image(src_attribute, **options, &block)

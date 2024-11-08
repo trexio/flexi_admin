@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Helpers::Selectable
+module Jaaf::Components::Helpers::Selectable
   def selectable
     @is_selectable = true
   end

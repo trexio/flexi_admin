@@ -38,6 +38,7 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "rails", "~> 7.1.0"
+  spec.add_dependency "slim-rails"
   spec.add_dependency "view_component", "~> 3.1.0"
 
   # Development dependencies

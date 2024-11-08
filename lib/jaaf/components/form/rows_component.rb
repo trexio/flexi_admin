@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-class Form::RowsComponent < ViewComponent::Base
-  slim_template <<-SLIM
-    div.divide-y.overflow-auto
-      = content
-  SLIM
+module Jaaf::Components::Form
+  class RowsComponent < ViewComponent::Base
+    def call
+      content_tag :div, content, class: "divide-y overflow-auto"
+    end
+  end
 end

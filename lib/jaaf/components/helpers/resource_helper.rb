@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Helpers::ResourceHelper
+module Jaaf::Components::Helpers::ResourceHelper
   def autocomplete_path(action:, fields:, parent: nil)
     payload = {
       ac_action: action,

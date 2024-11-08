@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class ModalsController < ResourcesController
+module Jaaf::Controllers::ModalsController
   def show
-    component_class = params[:kind].gsub('-', '/').camelize.constantize
+    component_class = params[:kind].gsub("-", "/").camelize.constantize
 
-    raise ArgumentError, 'scope is required' if context_params.scope.blank?
+    raise ArgumentError, "scope is required" if context_params.scope.blank?
 
     context = Resources::Context.from_params(context_params)
 

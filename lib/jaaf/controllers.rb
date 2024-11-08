@@ -5,4 +5,5 @@ module Jaaf
   end
 end
 
-require_relative 'controllers/resources_controller'
+require_relative "controllers/resources_controller"
+require_relative "controllers/modals_controller"

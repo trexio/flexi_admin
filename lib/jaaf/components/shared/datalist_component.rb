@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
 # Independent component.
-class Shared::DatalistComponent < ViewComponent::Base
-  include Helpers::ResourceHelper
 
-  attr_reader :resource, :disabled, :action, :parent
+module Jaaf::Components::Shared
+  class DatalistComponent < ViewComponent::Base
+    include Jaaf::Components::Helpers::ResourceHelper
 
-  def initialize(resource = nil, scope: nil, disabled: false, parent: nil)
-    @resource = resource
-    @scope = scope
-    @parent = parent
+    attr_reader :resource, :disabled, :action, :parent
 
-    @action = action
-    @disabled = disabled
+    def initialize(resource = nil, scope: nil, disabled: false, parent: nil)
+      @resource = resource
+      @scope = scope
+      @parent = parent
+
+      @action = action
+      @disabled = disabled
+    end
   end
 end

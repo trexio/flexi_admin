@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Extend this module in the component to add class methods for registering a button
-module Helpers::ActionButtonHelper
+module Jaaf::Components::Helpers::ActionButtonHelper
   def button(label, icon: nil)
     @button = label
     @button_icon = icon

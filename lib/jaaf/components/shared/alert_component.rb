@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-class Shared::AlertComponent < ViewComponent::Base
-  attr_reader :message
+module Jaaf::Components::Shared
+  class AlertComponent < ViewComponent::Base
+    attr_reader :message
 
-  def initialize(message:)
-    @message = message
+    def initialize(message:)
+      @message = message
+    end
   end
 end

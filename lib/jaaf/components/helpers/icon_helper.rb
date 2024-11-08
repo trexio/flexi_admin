@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# Extend this module in the component to add class methods for registering a icon
-module Helpers::IconHelper
+module Jaaf::Components::Helpers::IconHelper
   def icon
     self.class.instance_variable_get(:@icon_value) || options[:icon]
   end

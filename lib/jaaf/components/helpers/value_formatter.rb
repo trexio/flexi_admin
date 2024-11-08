@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-module Helpers::ValueFormatter
+module Jaaf::Components::Helpers::ValueFormatter
+
   def as_text(value)
     value.to_s
   end
