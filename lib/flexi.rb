@@ -24,6 +24,9 @@ require_relative "flexi/services"
 # Helpers
 require_relative "flexi/helpers"
 
+# Railtie
+require 'flexi/railtie' if defined?(Rails)
+
 module Flexi
   class Error < StandardError; end
 

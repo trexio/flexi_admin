@@ -4,6 +4,7 @@ module Flexi::Services::CodeGen
   EXAMPLES_DIR = 'examples'
 
   class Runner
+    binding.pry if Rails.env.development?
     SYSTEM_PROMPT_FILE = 'prompts/codegen-system-prompt.md'
     OUTPUT_PROMPT_FILE = 'tmp/prompt-submitted.md'
     OUTPUT_CODE_FILE = 'tmp/code_gen.json'
