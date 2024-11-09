@@ -3,13 +3,13 @@ require "semantic"
 require "rake"
 
 namespace :semantic do
-  desc "Increment the gem version stored in .app-version"
+  desc "Increment the gem version stored in .gem-version"
   task :increment, [:kind] do |_t, args|
     version_file = FlexiAdmin::VERSION_FILE
 
-    # Check if the .app-version file is changed in the current commit
+    # Check if the .gem-version file is changed in the current commit
     if `git diff --name-only HEAD`.split("\n").include?(version_file)
-      puts ".app-version file has been changed in the current commit. Exiting task without changes."
+      puts ".gem-version file has been changed in the current commit. Exiting task without changes."
       exit 0
     end
 
@@ -37,10 +37,18 @@ namespace :semantic do
       raise "Invalid increment kind: #{increment_kind}. Valid kinds are: major, minor, patch."
     end
 
+    replace_version_in_version_file(version.to_s)
+
     # Write the new version back to the file
     File.write(version_file, version.to_s)
 
     # Output the new version
     puts "Version updated to #{version}"
   end
+end
+
+def replace_version_in_version_file(new_version)
+  file = File.read("lib/flexi_admin/version.rb")
+  file.gsub!(/VERSION = ".*"/, "VERSION = \"#{new_version}\"")
+  File.write("lib/flexi_admin/version.rb", file)
 end

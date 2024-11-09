@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    flexi_admin (0.0.1)
+    flexi_admin (0.0.2)
       rails (~> 7.1.0)
       slim-rails
       view_component (~> 3.1.0)
