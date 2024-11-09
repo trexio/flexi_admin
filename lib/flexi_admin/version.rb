@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module FlexiAdmin
-  VERSION = "0.1.2"
+  VERSION_FILE = ".gem-version"
+  VERSION = File.read(VERSION_FILE).strip
 
   def self.version
     VERSION
