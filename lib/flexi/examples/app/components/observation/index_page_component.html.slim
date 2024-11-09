@@ -1,0 +1,8 @@
+= render Resources::IndexPageComponent.new(resources,
+                                           scope: 'observations',
+                                           title: 'Závady',
+                                           context_params:) do |c|
+  - c.with_search
+    = render Resource::AutocompleteComponent.new(scope: 'observations', action: :show)
+
+  = render Observation::ResourcesComponent.new(resources, context_params:)

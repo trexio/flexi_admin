@@ -33,9 +33,7 @@ File schema:
 { "filename": "code (string)" }
 ```
 
-### Task Input and Expected Output
-
-#### Task Input
+### Description of Task Input
 
 The task description provided will include specific details on:
 
@@ -44,7 +42,15 @@ The task description provided will include specific details on:
 
 **Example Task Descriptions**:
 
-```plaintext
 1. Create show page components for model "Playgrounds." Use nested ResourceComponent for playground elements. Reference the model's DB attributes.
 2. Create show page components for model "User." Reference the DB model attributes and follow conventions.
+
+# Task
+
+{{task}}
+
+# Sample files
+
+```plaintext
+{{sample_files}}
 ```

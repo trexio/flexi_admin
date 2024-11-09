@@ -1,0 +1,17 @@
+= render Resource::ViewComponent.new(context) do |c|
+  - c.with_form do
+    = render Observation::Show::EditFormComponent.new(resource, disabled: false)
+  /- c.with_actions do
+    // CodeGen: bulk action registration
+    = render Actions::SelectComponent.new(scope: 'inspections') do |select|
+      = select.with_action do
+        = render Resource::LinkActionComponent.new('Generovat protokol', inspection_protocol_path(resource.id), icon: 'file-earmark-text')
+
+  .d-flex.flex-column.gap-4
+    // Unattached images
+    - if observation_images.any?
+      div
+        h2 Fotky
+        = render ObservationImage::ResourcesComponent.new(observation_images,
+                                                          context_params:,
+                                                          parent: resource)

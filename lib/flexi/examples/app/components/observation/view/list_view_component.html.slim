@@ -1,0 +1,10 @@
+// CodeGen: use as: :date for date or time fields
+// CodeGen: link to the resource by using navigate_to
+
+= list_view do
+  - selectable
+  - column :element, label: 'element', sortable: true do |observation|
+    - navigate_to observation.element.name, element_path(observation.element)
+  - column :description, label: 'závada', sortable: true do |observation|
+    - navigate_to observation.description, observation_path(observation)
+  - column :remedy, label: 'náprava', sortable: true
