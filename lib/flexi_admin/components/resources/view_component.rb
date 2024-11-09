@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-class Resources::ViewComponent < ViewComponent::Base
-  attr_reader :context, :title
+module FlexiAdmin::Components::Resources
+  class ViewComponent < ViewComponent::Base
+    attr_reader :context, :title
 
-  renders_one :actions
-  renders_one :views
+    renders_one :actions
+    renders_one :views
 
-  def initialize(context)
-    @context = context
-    @title = context.options[:title]
+    def initialize(context)
+      @context = context
+      @title = context.options[:title]
+    end
   end
 end

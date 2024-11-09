@@ -5,4 +5,4 @@ module FlexiAdmin
   end
 end
 
-require_relative 'resources/context'
+require_relative "resources/context"

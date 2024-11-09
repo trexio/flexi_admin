@@ -39,10 +39,10 @@ module FlexiAdmin::Services::CodeGen
       @client = OpenAI::Client.new log_errors: true
     end
 
-    def chat(message, format: 'text')
+    def chat(message, format: 'text', model: GPT_4o)
       response = client.chat(
         parameters: {
-          model: GPT_4o,
+          model: model,
           response_format: { type: format.to_s == 'json' ? 'json_object' : 'text' },
           messages: [{ role: 'user', content: message }],
           temperature: 0.7

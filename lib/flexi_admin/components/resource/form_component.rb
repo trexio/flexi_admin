@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-class Resource::FormComponent < ViewComponent::Base
-  include Resource::FormMixin
+module FlexiAdmin::Components::Resource
+  class FormComponent < ViewComponent::Base
+    include FlexiAdmin::Components::Resource::FormMixin
 
-  attr_reader :resource, :disabled
+    attr_reader :resource, :disabled
 
-  def initialize(resource, disabled: true)
-    @resource = resource
-    @disabled = disabled
+    def initialize(resource, disabled: true)
+      @resource = resource
+      @disabled = disabled
+    end
   end
 end

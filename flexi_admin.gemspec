@@ -24,7 +24,9 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir[
     "lib/**/*",
-    "lib/tasks/**/*"
+    "MIT-LICENSE",
+    "Rakefile",
+    "README.md"
   ]
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
@@ -35,7 +37,8 @@ Gem::Specification.new do |spec|
                         "lib/flexi_admin/javascript"]
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency "rails", "~> 7.1.0"
+  # spec.add_dependency "rails", "~> 7.1.0"
+  spec.add_dependency "actionview", "~> 7.1.0"
   spec.add_dependency "slim-rails"
   spec.add_dependency "view_component", "~> 3.1.0"
 

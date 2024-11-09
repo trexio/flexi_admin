@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
-class Resource::LinkActionComponent < ViewComponent::Base
-  extend Helpers::ActionButtonHelper
-  include Helpers::IconHelper
+module FlexiAdmin::Components::Resource
+  class LinkActionComponent < ViewComponent::Base
+    extend FlexiAdmin::Components::Helpers::ActionButtonHelper
+    include FlexiAdmin::Components::Helpers::IconHelper
 
-  attr_reader :label, :path, :options
+    attr_reader :label, :path, :options
 
-  def initialize(label, path, **options)
-    @label = label
-    @path = path
-    @options = options
+    def initialize(label, path, **options)
+      @label = label
+      @path = path
+      @options = options
+    end
   end
 end

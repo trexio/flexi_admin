@@ -1,78 +1,80 @@
 # frozen_string_literal: true
 
 # Dependent component (context required).
-class Resources::ListViewComponent < ViewComponent::Base
-  include Helpers::ResourceHelper
-  include Helpers::ValueFormatter
-  include Helpers::Selectable
-  include Helpers::LinkHelper
+module FlexiAdmin::Components::Resources
+  class ListViewComponent < ViewComponent::Base
+    include FlexiAdmin::Components::Helpers::ResourceHelper
+    include FlexiAdmin::Components::Helpers::ValueFormatter
+    include FlexiAdmin::Components::Helpers::Selectable
+    include FlexiAdmin::Components::Helpers::LinkHelper
 
-  class Column < Struct.new(:attribute, :value, :options)
-    def width
-      options[:width]
+    class Column < Struct.new(:attribute, :value, :options)
+      def width
+        options[:width]
+      end
+
+      def label
+        options[:label]
+      end
+
+      def sortable?
+        options.key?(:sortable).present? || false
+      end
+
+      def sort_by
+        options[:sortable].presence || attribute
+      end
+
+      def formatted_value(value)
+        options[:formatter].call(value)
+      end
     end
 
-    def label
-      options[:label]
+    attr_reader :context, :columns, :resources, :resource
+
+    def initialize(context)
+      @context = context
+      @resources = context.resources
+      @columns = []
+      @headers = []
+      @is_selectable = false
     end
 
-    def sortable?
-      options.key?(:sortable).present? || false
+    def render?
+      context.params.current_view == 'list' ||
+        (context.views.first == 'list' && context.params.current_view.blank?)
     end
 
-    def sort_by
-      options[:sortable].presence || attribute
+    def as_text(value)
+      value.to_s
     end
 
-    def formatted_value(value)
-      options[:formatter].call(value)
+    def as_date(value, format: nil)
+      return if value.blank?
+
+      I18n.l(value, format:)
     end
-  end
 
-  attr_reader :context, :columns, :resources, :resource
+    def list_view
+      yield
 
-  def initialize(context)
-    @context = context
-    @resources = context.resources
-    @columns = []
-    @headers = []
-    @is_selectable = false
-  end
+      table
+    end
 
-  def render?
-    context.params.current_view == 'list' ||
-      (context.views.first == 'list' && context.params.current_view.blank?)
-  end
+    def table
+      render Resources::ListView::TableComponent.new(headers, columns, resources, context, selectable: true)
+    end
 
-  def as_text(value)
-    value.to_s
-  end
+    def column(attribute, options = {}, &block)
+      @columns << build_column(attribute, options, &block)
+    end
 
-  def as_date(value, format: nil)
-    return if value.blank?
+    def build_column(attribute, options, &block)
+      options[:formatter] = format(options[:as] || :text)
 
-    I18n.l(value, format:)
-  end
-
-  def list_view
-    yield
-
-    table
-  end
-
-  def table
-    render Resources::ListView::TableComponent.new(headers, columns, resources, context, selectable: true)
-  end
-
-  def column(attribute, options = {}, &block)
-    @columns << build_column(attribute, options, &block)
-  end
-
-  def build_column(attribute, options, &block)
-    options[:formatter] = format(options[:as] || :text)
-
-    Column.new(attribute,
-               block || proc { |resource| resource.send(attribute) },
-               options.presence || {})
+      Column.new(attribute,
+                block || proc { |resource| resource.send(attribute) },
+                options.presence || {})
+    end
   end
 end

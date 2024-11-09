@@ -1,84 +1,86 @@
 # frozen_string_literal: true
 
 # Dependent component, context required.
-class Resources::GridViewComponent < ViewComponent::Base
-  include FlexiAdmin::Components::Helpers::ValueFormatter
-  include FlexiAdmin::Components::Helpers::ResourceHelper
-  include FlexiAdmin::Components::Helpers::Selectable
-  include FlexiAdmin::Components::Helpers::LinkHelper
+module FlexiAdmin::Components::Resources
+  class GridViewComponent < ViewComponent::Base
+    include FlexiAdmin::Components::Helpers::ValueFormatter
+    include FlexiAdmin::Components::Helpers::ResourceHelper
+    include FlexiAdmin::Components::Helpers::Selectable
+    include FlexiAdmin::Components::Helpers::LinkHelper
 
-  class Element < Struct.new(:attribute, :value, :options)
-    include Rails.application.routes.url_helpers
+    class Element < Struct.new(:attribute, :value, :options)
+      include FlexiAdmin::Components::Helpers::UrlHelper
 
-    def formatted_value(value)
-      options[:formatter].call(value)
+      def formatted_value(value)
+        options[:formatter].call(value)
+      end
+
+      def src(image, variant: nil)
+        raise "ActiveStorage::Attached::One required, got #{image.class}" if image.class != ActiveStorage::Attached::One
+
+        return unless variant && image.attached?
+
+        url_for(image.variant(variant))
+      rescue ActiveStorage::InvariableError
+        url_for(image)
+      end
+
+      def media_type(resource)
+        resource.media_type.to_s
+      end
     end
 
-    def src(image, variant: nil)
-      raise "ActiveStorage::Attached::One required, got #{image.class}" if image.class != ActiveStorage::Attached::One
+    attr_reader :context, :resources, :resource
+    attr_accessor :title_element, :header_element, :description_element, :image_element
 
-      return unless variant && image.attached?
+    def initialize(context)
+      @context = context
+      @resources = context.resources
 
-      url_for(image.variant(variant))
-    rescue ActiveStorage::InvariableError
-      url_for(image)
+      @is_selectable = false
     end
 
-    def media_type(resource)
-      resource.media_type.to_s
+    def grid_view
+      yield
+
+      grid
     end
-  end
 
-  attr_reader :context, :resources, :resource
-  attr_accessor :title_element, :header_element, :description_element, :image_element
+    def grid
+      render Resources::GridView::GridComponent.new(resources, title_element, header_element, description_element,
+                                                    image_element, context)
+    end
 
-  def initialize(context)
-    @context = context
-    @resources = context.resources
+    def render?
+      context.params.current_view == "grid" ||
+        (context.views.first == "grid" && context.params.current_view.blank?)
+    end
 
-    @is_selectable = false
-  end
+    def image(src_attribute, **options, &block)
+      value = block || proc { |resource| resource.send(src_attribute) }
 
-  def grid_view
-    yield
+      self.image_element = Element.new(src_attribute, value, options)
+    end
 
-    grid
-  end
+    def title(attribute, **options, &block)
+      value = block || proc { |resource| resource.send(attribute) }
+      options[:formatter] = format(options[:as] || :text)
 
-  def grid
-    render Resources::GridView::GridComponent.new(resources, title_element, header_element, description_element,
-                                                  image_element, context)
-  end
+      self.title_element = Element.new(attribute, value, options)
+    end
 
-  def render?
-    context.params.current_view == "grid" ||
-      (context.views.first == "grid" && context.params.current_view.blank?)
-  end
+    def header(attribute, **options, &block)
+      value = block || proc { |resource| resource.send(attribute) }
+      options[:formatter] = format(options[:as] || :text)
 
-  def image(src_attribute, **options, &block)
-    value = block || proc { |resource| resource.send(src_attribute) }
+      self.header_element = Element.new(attribute, value, options)
+    end
 
-    self.image_element = Element.new(src_attribute, value, options)
-  end
+    def description(attribute, **options, &block)
+      value = block || proc { |resource| resource.send(attribute) }
+      options[:formatter] = format(options[:as] || :text)
 
-  def title(attribute, **options, &block)
-    value = block || proc { |resource| resource.send(attribute) }
-    options[:formatter] = format(options[:as] || :text)
-
-    self.title_element = Element.new(attribute, value, options)
-  end
-
-  def header(attribute, **options, &block)
-    value = block || proc { |resource| resource.send(attribute) }
-    options[:formatter] = format(options[:as] || :text)
-
-    self.header_element = Element.new(attribute, value, options)
-  end
-
-  def description(attribute, **options, &block)
-    value = block || proc { |resource| resource.send(attribute) }
-    options[:formatter] = format(options[:as] || :text)
-
-    self.description_element = Element.new(attribute, value, options)
+      self.description_element = Element.new(attribute, value, options)
+    end
   end
 end

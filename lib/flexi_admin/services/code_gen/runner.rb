@@ -4,14 +4,14 @@ module FlexiAdmin::Services::CodeGen
   EXAMPLES_DIR = 'examples'
 
   class Runner
-    SYSTEM_PROMPT_FILE = 'prompts/codegen-system-prompt.md'
+    SYSTEM_PROMPT_FILENAME = 'prompts/codegen-system-prompt.md'
     OUTPUT_PROMPT_FILE = 'tmp/prompt-submitted.md'
     OUTPUT_CODE_FILE = 'tmp/code_gen.json'
     def execute(text)
       prompt = prompt(text)
       File.write OUTPUT_PROMPT_FILE, prompt
 
-      result = FlexiAdmin::Services::CodeGen::Gpt.new.chat FlexiAdmin::Services::CodeGen::Prompts::CodeGen.new.prompt(text), format: :json
+      result = FlexiAdmin::Services::CodeGen::Gpt.new.chat prompt, format: :json, model: Gpt::GPT_4o_mini
       File.write OUTPUT_CODE_FILE, result.as_json.to_json
       execute_response(result.as_json.dig('files'))
 
@@ -21,6 +21,8 @@ module FlexiAdmin::Services::CodeGen
     end
 
     def execute_response(array_of_hashes)
+      raise "Array of hashes, expected, got #{array_of_hashes.inspect}" if !array_of_hashes.is_a?(Array)
+
       array_of_hashes.each do |hash|
         FileUtils.mkdir_p File.dirname(hash['filename'])
         File.write hash['filename'], hash['code']
@@ -46,7 +48,11 @@ module FlexiAdmin::Services::CodeGen
     end
 
     def system_prompt
-      File.read(SYSTEM_PROMPT_FILE)
+      File.read(resolve_file_path(SYSTEM_PROMPT_FILENAME))
+    end
+
+    def gem_info
+      @gem_info ||= Gem::Specification.find_by_name('flexi_admin')
     end
 
     def prompt(text)
@@ -60,8 +66,9 @@ module FlexiAdmin::Services::CodeGen
         result << "# Description\n"
         result << "#{object.description}\n\n# Files\n"
         object.files.each do |file|
+          path = resolve_file_path(file)
           result << "/# #{file.sub(%r{^#{EXAMPLES_DIR}/}, '')}\n"
-          result << "#{File.read(file)}\n\n" # Fetch from examples/ directory
+          result << "#{File.read(path)}\n\n" # Fetch from examples/ directory
         end
       end
       result
@@ -72,6 +79,12 @@ module FlexiAdmin::Services::CodeGen
                                     model_files,
                                     controller_files,
                                     config_files)
+    end
+
+    def resolve_file_path(file)
+      local_path = gem_info.full_gem_path
+      full_path = gem_info.files.find { |f| f.include?(file) }
+      File.expand_path(full_path, local_path)
     end
 
     def resource_files

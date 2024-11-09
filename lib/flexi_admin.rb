@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Gems
-require "rails"
+# require "rails"
 require "view_component"
 require "slim-rails"
 
@@ -25,7 +25,7 @@ require_relative "flexi_admin/services"
 require_relative "flexi_admin/helpers"
 
 # Railtie
-require 'flexi_admin/railtie' if defined?(Rails)
+require "flexi_admin/railtie" if defined?(Rails)
 
 module FlexiAdmin
   class Error < StandardError; end

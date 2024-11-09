@@ -1,21 +1,23 @@
 # frozen_string_literal: true
 
-class Resource::FormElementComponent < ViewComponent::Base
-  include Helpers::ResourceHelper
+module FlexiAdmin::Components::Resource
+  class FormElementComponent < ViewComponent::Base
+    include FlexiAdmin::Components::Helpers::ResourceHelper
 
-  renders_one :fields
+    renders_one :fields
 
-  attr_reader :resource, :url, :css_class, :method, :html_options
+    attr_reader :resource, :url, :css_class, :method, :html_options
 
-  def initialize(resource, url:, css_class:, method: :post, **html_options)
-    @resource = resource
-    @url = url
-    @css_class = css_class
-    @method = method
-    @html_options = html_options
-  end
+    def initialize(resource, url:, css_class:, method: :post, **html_options)
+      @resource = resource
+      @url = url
+      @css_class = css_class
+      @method = method
+      @html_options = html_options
+    end
 
-  def form_id
-    resource.try(:identifier) || 'form'
+    def form_id
+      resource.try(:identifier) || "form"
+    end
   end
 end

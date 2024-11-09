@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Resources::BulkAction::ModalComponent < Resource::FormComponent
-  include Resource::FormMixin
-  extend Helpers::ActionButtonHelper
+  include FlexiAdmin::Components::Resource::FormMixin
+  extend FlexiAdmin::Components::Helpers::ActionButtonHelper
 
   attr_reader :context
 

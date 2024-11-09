@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Resources::ListView::TableComponent < ViewComponent::Base
-  include Helpers::ResourceHelper
+  include FlexiAdmin::Components::Helpers::ResourceHelper
 
   attr_reader :columns, :headers, :resources, :selectable, :context
 
