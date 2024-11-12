@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Nav::NavbarComponent < ViewComponent::Base
+class Nav::NavbarComponent < FlexiAdmin::Components::BaseComponent
   def links
     [
       { name: 'Hřiště', path: playgrounds_path, icon: 'bookshelf' },

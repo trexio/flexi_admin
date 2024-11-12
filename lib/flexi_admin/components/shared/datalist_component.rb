@@ -3,7 +3,7 @@
 # Independent component.
 
 module FlexiAdmin::Components::Shared
-  class DatalistComponent < ViewComponent::Base
+  class DatalistComponent < FlexiAdmin::Components::BaseComponent
     include FlexiAdmin::Components::Helpers::ResourceHelper
 
     attr_reader :resource, :disabled, :action, :parent

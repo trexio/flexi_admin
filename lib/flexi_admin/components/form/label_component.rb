@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Form
-  class LabelComponent < ViewComponent::Base
+  class LabelComponent < FlexiAdmin::Components::BaseComponent
     attr_reader :form, :name, :options
 
     def initialize(form, name, options = {})

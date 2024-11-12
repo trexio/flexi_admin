@@ -22,7 +22,7 @@ Your objective is to:
 Example:
 
 ```
-{ "filename": "app/components/observation/show/page_component.rb", "code": "#frozen_string_literal: true\n\nmodule Observation\n  module Show\n    class PageComponent < ViewComponent::Base\n    end\n  end\nend" }
+{ "filename": "app/components/observation/show/page_component.rb", "code": "#frozen_string_literal: true\n\nmodule Observation\n  module Show\n    class PageComponent < FlexiAdmin::Components::BaseComponent\n    end\n  end\nend" }
 ```
 
 ## Sample files

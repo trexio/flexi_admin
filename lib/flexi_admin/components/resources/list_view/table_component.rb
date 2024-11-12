@@ -1,19 +1,21 @@
 # frozen_string_literal: true
 
-class Resources::ListView::TableComponent < ViewComponent::Base
-  include FlexiAdmin::Components::Helpers::ResourceHelper
+module FlexiAdmin::Components::Resources::ListView
+  class TableComponent < FlexiAdmin::Components::BaseComponent
+    include FlexiAdmin::Components::Helpers::ResourceHelper
 
-  attr_reader :columns, :headers, :resources, :selectable, :context
+    attr_reader :columns, :headers, :resources, :selectable, :context
 
-  def initialize(headers, columns, resources, context, selectable: false)
-    @columns = columns
-    @headers = headers
-    @resources = resources
-    @selectable = selectable
-    @context = context
-  end
+    def initialize(headers, columns, resources, context, selectable: false)
+      @columns = columns
+      @headers = headers
+      @resources = resources
+      @selectable = selectable
+      @context = context
+    end
 
-  def selectable?
-    @selectable
+    def selectable?
+      @selectable
+    end
   end
 end

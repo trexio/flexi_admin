@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Resource
-  class LinkActionComponent < ViewComponent::Base
+  class LinkActionComponent < FlexiAdmin::Components::BaseComponent
     extend FlexiAdmin::Components::Helpers::ActionButtonHelper
     include FlexiAdmin::Components::Helpers::IconHelper
 

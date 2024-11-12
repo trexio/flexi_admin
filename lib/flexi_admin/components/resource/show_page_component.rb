@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Resource
-  class ShowPageComponent < ViewComponent::Base
+  class ShowPageComponent < FlexiAdmin::Components::BaseComponent
     include FlexiAdmin::Components::Helpers::ResourceHelper
     include FlexiAdmin::Components::Helpers::ActionHelper
     attr_reader :resource, :context_params, :disabled

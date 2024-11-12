@@ -2,7 +2,7 @@
 
 # Independent component.
 module FlexiAdmin::Components::Resources
-  class SwitchViewComponent < ViewComponent::Base
+  class SwitchViewComponent < FlexiAdmin::Components::BaseComponent
     include FlexiAdmin::Components::Helpers::ResourceHelper
 
     attr_reader :views, :context

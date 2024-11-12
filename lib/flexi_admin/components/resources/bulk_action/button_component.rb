@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Resources::BulkAction::ButtonComponent < ViewComponent::Base
+class Resources::BulkAction::ButtonComponent < FlexiAdmin::Components::BaseComponent
   include FlexiAdmin::Components::Helpers::UrlHelper
   include FlexiAdmin::Components::Helpers::IconHelper
 

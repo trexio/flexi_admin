@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Shared::Table
-  class HeaderItemComponent < ViewComponent::Base
+  class HeaderItemComponent < FlexiAdmin::Components::BaseComponent
     attr_reader :column, :attr, :justify, :width
 
     def initialize(column)

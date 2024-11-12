@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Shared
-  class MediumComponent < ViewComponent::Base
+  class MediumComponent < FlexiAdmin::Components::BaseComponent
     attr_accessor :attachment, :variant, :autoplay, :css_class
 
     renders_one :preview_missing

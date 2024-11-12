@@ -7,6 +7,6 @@ turbo-frame [id="#{context.scope}"
     .d-flex.gap-3
       = actions
     - if context.paginate?
-      = render Resources::PaginationComponent.new(context, per_page: context.params.per_page, page: context.params.page)
+      = render FlexiAdmin::Components::Resources::PaginationComponent.new(context, per_page: context.params.per_page, page: context.params.page)
   .py-2
     = views

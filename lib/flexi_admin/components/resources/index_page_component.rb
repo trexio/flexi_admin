@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Resources
-  class IndexPageComponent < ViewComponent::Base
+  class IndexPageComponent < FlexiAdmin::Components::BaseComponent
     attr_reader :resources, :context_params, :scope, :title, :search, :subtitle
 
     renders_one :search

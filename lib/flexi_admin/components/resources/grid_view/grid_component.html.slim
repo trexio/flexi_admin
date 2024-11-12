@@ -3,8 +3,8 @@
     = label_tag 'all', 'vybrat vše', class: 'form-check-label text-muted text-nowrap', for: 'checkbox-all'
 .grid-view.row.g-0.row-cols-2.gap-4.row-cols-lg-3.row-cols-xl-4.row-cols-xxl-5
   - resources.each do |resource|
-    = render Resources::GridView::CardComponent.new(resource,
-                                                    title_element,
-                                                    header_element,
-                                                    description_element,
-                                                    image_element)
+    = render FlexiAdmin::Components::Resources::GridView::CardComponent.new(resource,
+                                                                            title_element,
+                                                                            header_element,
+                                                                            description_element,
+                                                                            image_element)

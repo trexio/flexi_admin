@@ -1,6 +1,6 @@
-= render Resources::ViewComponent.new(context) do |c|
+= render FlexiAdmin::Components::Resources::ViewComponent.new(context) do |c|
   - c.with_actions do
-    = render Resources::SwitchViewComponent.new(context)
+    = render FlexiAdmin::Components::Resources::SwitchViewComponent.new(context)
     = render Actions::SelectComponent.new(scope: 'inspections') do |select|
       = select.with_action do
         = action Observation::Action::ProtocolFromObservations

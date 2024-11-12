@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Resources
-  class PaginationComponent < ViewComponent::Base
+  class PaginationComponent < FlexiAdmin::Components::BaseComponent
     LIMIT = 10
 
     include FlexiAdmin::Components::Helpers::ResourceHelper
@@ -54,7 +54,7 @@ module FlexiAdmin::Components::Resources
     end
 
     def paginated_resources
-      @resources
+      @resources.paginate(page:, per_page:)
     end
 
     def total_pages

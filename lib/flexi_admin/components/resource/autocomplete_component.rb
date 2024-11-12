@@ -2,7 +2,7 @@
 
 # Independent component.
 module FlexiAdmin::Components::Resource
-  class AutocompleteComponent < ViewComponent::Base
+  class AutocompleteComponent < FlexiAdmin::Components::BaseComponent
     include FlexiAdmin::Components::Helpers::ResourceHelper
 
     attr_reader :resource, :disabled, :action, :parent, :fields, :required,

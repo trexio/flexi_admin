@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 # Gems
-# require "rails"
-require "view_component"
 require "slim-rails"
+require "view_component"
+require "will_paginate"
+require "will_paginate-bootstrap-style"
 
 # Rails modules
 require "action_view"
@@ -19,6 +20,7 @@ require_relative "flexi_admin/config"
 # Core modules
 require_relative "flexi_admin/controllers"
 require_relative "flexi_admin/components"
+require_relative "flexi_admin/models"
 require_relative "flexi_admin/services"
 
 # Helpers
@@ -26,6 +28,9 @@ require_relative "flexi_admin/helpers"
 
 # Railtie
 require "flexi_admin/railtie" if defined?(Rails)
+
+# Routes
+require "flexi_admin/routes"
 
 module FlexiAdmin
   class Error < StandardError; end

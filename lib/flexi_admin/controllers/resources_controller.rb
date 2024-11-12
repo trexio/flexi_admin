@@ -1,12 +1,26 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Controllers::ResourcesController
+  extend ActiveSupport::Concern
   # rescue_from RuntimeError, with: :handle_runtime_error
+
+  included do
+    before_action :context_params
+  end
+
+  def context_params
+    @context_params ||= FlexiAdmin::Models::ContextParams.new(context_permitted_params)
+  end
+
+  def context_permitted_params
+    @context_permitted_params ||= params.permit(*FlexiAdmin::Models::ContextParams.permitted_params_keys)
+  end
+
 
   def handle_runtime_error(error)
     return BugTracker.notify(error) if true
 
-    flash[:error] = Toast.new(error.message)
+    flash[:error] = FlexiAdmin::Models::Toast.new(error.message)
 
     render_toasts
   end
@@ -93,7 +107,7 @@ module FlexiAdmin::Controllers::ResourcesController
 
     redirect_to_path result.path and return if result.result == :redirect
 
-    flash[result.result] = Toast.new(result.message)
+    flash[result.result] = FlexiAdmin::Models::Toast.new(result.message)
 
     reload_page
   end

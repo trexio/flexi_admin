@@ -2,7 +2,7 @@
 
 # Dependent component (context required).
 module FlexiAdmin::Components::Resources
-  class ListViewComponent < ViewComponent::Base
+  class ListViewComponent < FlexiAdmin::Components::BaseComponent
     include FlexiAdmin::Components::Helpers::ResourceHelper
     include FlexiAdmin::Components::Helpers::ValueFormatter
     include FlexiAdmin::Components::Helpers::Selectable
@@ -62,7 +62,7 @@ module FlexiAdmin::Components::Resources
     end
 
     def table
-      render Resources::ListView::TableComponent.new(headers, columns, resources, context, selectable: true)
+      render FlexiAdmin::Components::Resources::ListView::TableComponent.new(headers, columns, resources, context, selectable: true)
     end
 
     def column(attribute, options = {}, &block)

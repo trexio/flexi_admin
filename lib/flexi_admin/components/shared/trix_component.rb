@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Shared
-  class TrixComponent < ViewComponent::Base
+  class TrixComponent < FlexiAdmin::Components::BaseComponent
     attr_reader :form, :name, :options
 
     def initialize(form, name, options = {})

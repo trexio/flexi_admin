@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Helpers::ResourceHelper
+  include FlexiAdmin::Components::Helpers::UrlHelper
+
   def autocomplete_path(action:, fields:, parent: nil)
     payload = {
       ac_action: action,
@@ -8,7 +10,7 @@ module FlexiAdmin::Components::Helpers::ResourceHelper
       x_parent: parent&.gid_param,
       ac_fields: fields
     }
-    send "autocomplete_#{scope_plural}_path".to_sym, params: payload
+    main_app.send("autocomplete_#{scope_plural}_path", params: payload)
   end
 
   def datalist_path(action:, fields:, parent: nil)
@@ -17,21 +19,21 @@ module FlexiAdmin::Components::Helpers::ResourceHelper
       ac_fields: fields
     }
 
-    send "datalist_#{scope_plural}_path".to_sym, params: payload
+    main_app.send("datalist_#{scope_plural}_path", params: payload)
   end
 
   def edit_resource_path(resource, **params)
-    send "edit_#{scope_singular}_path".to_sym, resource, params:
+    main_app.send("edit_#{scope_singular}_path", resource, params:)
   end
 
   def bulk_action_path(scope, **params)
     raise 'Scope is not defined' if scope.blank?
 
-    send "bulk_action_#{scope}_path".to_sym, params:
+    main_app.send("bulk_action_#{scope}_path", params:)
   end
 
   def resource_path(resource, **params)
-    send "#{scope_singular}_path".to_sym, resource, params:
+    main_app.send("#{scope_singular}_path", resource, params:)
   end
 
   def resource__path
@@ -39,7 +41,7 @@ module FlexiAdmin::Components::Helpers::ResourceHelper
   end
 
   def resources_path(**params)
-    send "#{scope_plural}_path", params:
+    main_app.send("#{scope_plural}_path", params:)
   end
 
   def resource_input_name

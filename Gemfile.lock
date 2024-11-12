@@ -3,8 +3,11 @@ PATH
   specs:
     flexi_admin (0.0.4)
       actionview (~> 7.1.0)
+      activesupport (~> 7.1.5)
       slim-rails
       view_component (~> 3.1.0)
+      will_paginate
+      will_paginate-bootstrap-style
 
 GEM
   remote: https://rubygems.org/
@@ -174,6 +177,9 @@ GEM
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
     webrick (1.8.2)
+    will_paginate (4.0.1)
+    will_paginate-bootstrap-style (0.3.0)
+      will_paginate (~> 4.0, >= 4.0.0)
     zeitwerk (2.6.18)
 
 PLATFORMS

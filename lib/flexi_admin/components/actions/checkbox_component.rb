@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Actions
-  class CheckboxComponent < ViewComponent::Base
+  class CheckboxComponent < FlexiAdmin::Components::BaseComponent
     attr_reader :id, :scope, :select_all
 
     def initialize(id:, scope:, select_all: false)

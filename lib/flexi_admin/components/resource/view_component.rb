@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Resource
-  class ViewComponent < ViewComponent::Base
+  class ViewComponent < FlexiAdmin::Components::BaseComponent
     include FlexiAdmin::Components::Helpers::ResourceHelper
     include FlexiAdmin::Components::Helpers::ActionHelper
 

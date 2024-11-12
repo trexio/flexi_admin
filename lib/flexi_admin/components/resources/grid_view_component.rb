@@ -2,7 +2,7 @@
 
 # Dependent component, context required.
 module FlexiAdmin::Components::Resources
-  class GridViewComponent < ViewComponent::Base
+  class GridViewComponent < FlexiAdmin::Components::BaseComponent
     include FlexiAdmin::Components::Helpers::ValueFormatter
     include FlexiAdmin::Components::Helpers::ResourceHelper
     include FlexiAdmin::Components::Helpers::Selectable

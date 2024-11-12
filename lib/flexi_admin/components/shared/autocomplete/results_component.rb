@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Shared::Autocomplete
-  class ResultsComponent < ViewComponent::Base
+  class ResultsComponent < FlexiAdmin::Components::BaseComponent
     attr_reader :results, :results_count, :context_params, :fields, :action, :path
 
     def initialize(results:, context_params:, results_count: nil)

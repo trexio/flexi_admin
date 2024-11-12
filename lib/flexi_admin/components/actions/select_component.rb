@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Actions
-  class SelectComponent < ViewComponent::Base
+  class SelectComponent < FlexiAdmin::Components::BaseComponent
     attr_reader :scope, :label
 
     renders_many :actions

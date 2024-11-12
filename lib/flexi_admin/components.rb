@@ -6,19 +6,27 @@ module FlexiAdmin
     module Form; end
     module Helpers; end
     module Resource; end
-    module Resources; end
+
+    module Resources
+      module ListView; end
+      module GridView; end
+    end
+
     module Shared; end
   end
 end
+
+# Base Component
+require_relative "components/base_component"
 
 # Helpers
 require_relative "components/helpers/action_button_helper"
 require_relative "components/helpers/action_helper"
 require_relative "components/helpers/icon_helper"
 require_relative "components/helpers/link_helper"
+require_relative "components/helpers/url_helper"
 require_relative "components/helpers/resource_helper"
 require_relative "components/helpers/selectable"
-require_relative "components/helpers/url_helper"
 require_relative "components/helpers/value_formatter"
 
 require_relative "components/resource/form_mixin"
@@ -47,6 +55,7 @@ require_relative "components/resources/index_page_component"
 require_relative "components/resources/list_view_component"
 require_relative "components/resources/pagination_component"
 require_relative "components/resources/resources_component"
+require_relative "components/resources/switch_view_component"
 require_relative "components/resources/view_component"
 
 # Shared Components
@@ -55,3 +64,11 @@ require_relative "components/shared/datalist_component"
 require_relative "components/shared/medium_component"
 require_relative "components/shared/table/header_item_component"
 require_relative "components/shared/trix_component"
+
+# Resources List View Components
+require_relative "components/resources/list_view/cell_component"
+require_relative "components/resources/list_view/table_component"
+
+# Resources Grid View Components
+require_relative "components/resources/grid_view/card_component"
+require_relative "components/resources/grid_view/grid_component"

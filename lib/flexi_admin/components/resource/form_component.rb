@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FlexiAdmin::Components::Resource
-  class FormComponent < ViewComponent::Base
+  class FormComponent < FlexiAdmin::Components::BaseComponent
     include FlexiAdmin::Components::Resource::FormMixin
 
     attr_reader :resource, :disabled

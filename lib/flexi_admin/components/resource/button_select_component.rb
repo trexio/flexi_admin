@@ -2,7 +2,7 @@
 
 # Requirement is handled by the model
 module FlexiAdmin::Components::Resource
-  class ButtonSelectComponent < ViewComponent::Base
+  class ButtonSelectComponent < FlexiAdmin::Components::BaseComponent
     attr_reader :resource, :attr_name, :options, :form, :label, :value, :html_options, :disabled
 
     def initialize(resource, attr_name, options, form:, label: nil, value: nil, disabled: false, **html_options)

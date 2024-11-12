@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-class ApplicationResource < ActiveRecord::Base
-  primary_abstract_class
-  nilify_blanks
+module FlexiAdmin::Models::Concerns::ApplicationResource
+  extend ActiveSupport::Concern
 
-  include Parentable
+  included do
+    include FlexiAdmin::Models::Concerns::Parentable
+  end
 
   def identifier
     "#{self.class.name.underscore}_#{id}"
