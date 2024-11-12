@@ -7,7 +7,7 @@ module FlexiAdmin::Services::CodeGen
         "app/assets/builds/"
       ]
       File.open("tmp/codebase.txt", "w") do |file|
-        Dir.glob("app/**/*").each do |filename|
+        Dir.glob("lib/flexi_admin/*.rb").each do |filename|
           next if exclusions.any? { |exclusion| filename.include?(exclusion) }
 
           next unless File.file?(filename)

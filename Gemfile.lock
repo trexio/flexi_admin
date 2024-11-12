@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    flexi_admin (0.0.4)
+    flexi_admin (0.0.5)
       actionview (~> 7.1.0)
       activesupport (~> 7.1.5)
       slim-rails

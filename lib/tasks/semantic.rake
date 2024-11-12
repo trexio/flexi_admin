@@ -1,8 +1,11 @@
 # Rakefile or tasks/semantic.rake
-require "semantic"
-require "rake"
 
 namespace :semantic do
+  desc "Export the code base to tmp/codebase.txt"
+  task :code_export do |_t, _args|
+    FlexiAdmin::Services::CodeGen::CodeExport.export_codebase
+  end
+
   desc "Increment the gem version stored in .gem-version"
   task :increment, [:kind] do |_t, args|
     version_file = FlexiAdmin::VERSION_FILE
