@@ -7,14 +7,10 @@ module FlexiAdmin
       load "tasks/flexi_admin.rake"
     end
 
-    initializer "flexi_admin.node_paths" do |_app|
-      node_paths ||= []
-      node_paths << "./node_modules"
-      node_paths << absolute_gem_path("lib/flexi_admin/javascript")
-      ENV["NODE_PATH"] = node_paths.join(":")
-
-      # Set the NODE_PATH for the current bash session
-      system("export NODE_PATH=#{ENV["NODE_PATH"]}")
+    initializer "flexi_admin.asset_paths" do |_app|
+      # This enables
+      setup_node_path
+      setup_sass_path
     end
 
     initializer "flexi_admin.configure" do |app|
@@ -24,30 +20,41 @@ module FlexiAdmin
     initializer "flexi_admin.assets" do |app|
       # Add asset paths to host application
       app.config.assets.paths << absolute_gem_path("lib/flexi_admin/javascript")
-      app.config.assets.paths << absolute_gem_path("lib/flexi_admin/assets/stylesheets")
-
-      # Add precompile assets
-      app.config.assets.precompile += %w[flexi_admin.js]
+      app.config.assets.paths << absolute_gem_path("app/assets/stylesheets")
     end
 
-    # Configure importmap if using it
-    initializer "flexi_admin.importmap", before: "importmap" do |app|
-      if app.config.respond_to?(:importmap)
-        app.config.importmap.paths << absolute_gem_path("app/flexi_admin/javascript")
-      end
-    end
-
-    # Configure stimulus controllers if needed
-    initializer "flexi_admin.stimulus_controllers" do |app|
-      if app.config.respond_to?(:stimulus_modules)
-        app.config.stimulus_modules |= [
-          { name: "flexi-admin", path: "flexi_admin/controllers" }
-        ]
-      end
-    end
+    # # Configure importmap if using it
+    # initializer "flexi_admin.importmap", before: "importmap" do |app|
+    #   if app.config.respond_to?(:importmap)
+    #     app.config.importmap.paths << absolute_gem_path("app/flexi_admin/javascript")
+    #   end
+    # end
 
     def absolute_gem_path(path)
       [Gem::Specification.find_by_name("flexi_admin").gem_dir, path].join("/")
+    end
+
+    def setup_node_path
+      node_paths ||= []
+      node_paths << "./node_modules"
+      node_paths << absolute_gem_path("lib/flexi_admin/javascript")
+      ENV["NODE_PATH"] = node_paths.join(":")
+
+      # Set the NODE_PATH for the current bash session
+      # https://nodejs.org/api/modules.html#loading-from-the-global-folders
+      system("export NODE_PATH=#{ENV["NODE_PATH"]}")
+    end
+
+    def setup_sass_path
+      sass_paths ||= []
+      sass_paths << "./node_modules"
+      sass_paths << absolute_gem_path("app/assets/stylesheets")
+      sass_paths << absolute_gem_path("app/assets/stylesheets/components")
+      ENV["SASS_PATH"] = sass_paths.join(":")
+
+      # Set the SASS_PATH for the current bash session
+      # https://sass-lang.com/documentation/cli/ruby-sass/#load-path
+      system("export SASS_PATH=#{ENV["SASS_PATH"]}")
     end
   end
 end
