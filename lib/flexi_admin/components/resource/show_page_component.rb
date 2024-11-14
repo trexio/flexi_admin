@@ -14,7 +14,7 @@ module FlexiAdmin::Components::Resource
     end
 
     def context
-      @context ||= Resources::Context.from_params(context_params.merge(scope: @scope), resource)
+      @context ||= FlexiAdmin::Models::Resources::Context.from_params(context_params.merge(scope: @scope), resource)
     end
   end
 end

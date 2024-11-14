@@ -3,6 +3,6 @@
                                            title: 'Závady',
                                            context_params:) do |c|
   - c.with_search
-    = render Resource::AutocompleteComponent.new(scope: 'observations', action: :show)
+    = render FlexiAdmin::Components::Resources::AutocompleteComponent.new(scope: 'observations', action: :show)
 
-  = render Observation::ResourcesComponent.new(resources, context_params:)
+  = render FlexiAdmin::Components::Resources::IndexPageComponent.new(resources, context_params:)

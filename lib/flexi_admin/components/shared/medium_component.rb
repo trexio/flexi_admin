@@ -28,11 +28,11 @@ module FlexiAdmin::Components::Shared
         raise "ActiveStorage::Attached::One required, got #{attachment.class}"
       end
 
-      return url_for(attachment) unless variant
+      return helpers.url_for(attachment) unless variant
 
-      url_for(attachment.variant(variant))
+      helpers.url_for(attachment.variant(variant))
     rescue ActiveStorage::InvariableError
-      url_for(attachment)
+      helpers.url_for(attachment)
     end
 
     def render_media

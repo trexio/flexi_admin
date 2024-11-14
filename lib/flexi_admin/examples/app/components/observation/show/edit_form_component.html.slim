@@ -4,5 +4,5 @@
   // CodeGen: Assume status is an enum on the model
   //= checkbox_field :excluded_from_service, label: 'Vyloučeno z provozu'
   // CodeGen: Use Resource::AutocompleteComponent for belongs_to association
-  = custom_field Resource::AutocompleteComponent.new(resource.inspection, scope: 'inspections', disabled: resource.persisted?), label: 'Kontrola'
+  = custom_field FlexiAdmin::Components::Resources::AutocompleteComponent.new(resource.inspection, scope: 'inspections', disabled: resource.persisted?), label: 'Kontrola'
   = submit

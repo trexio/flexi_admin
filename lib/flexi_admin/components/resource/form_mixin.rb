@@ -29,7 +29,7 @@ module FlexiAdmin::Components::Resource
 
     # Form does not render; fields do.
     def form(url: resource_path(resource), css_class: 'myForm section', method: :patch, **html_options, &block)
-      render Resource::FormElementComponent.new(resource, url:, css_class:, method:, **html_options) do |component|
+      render FlexiAdmin::Components::Resource::FormElementComponent.new(resource, url:, css_class:, method:, **html_options) do |component|
         component.with_fields do
           capture(&block)
         end
@@ -111,7 +111,7 @@ module FlexiAdmin::Components::Resource
 
     # Trix field
     def html_field(attr_name, label: nil, value: nil, **html_options)
-      custom_field(Shared::TrixComponent.new(attr_name:, value:, disabled:), label:, **html_options)
+      custom_field(FlexiAdmin::Components::Shared::TrixComponent.new(attr_name:, value:, disabled:), label:, **html_options)
     end
 
     def header(label, description: nil)
@@ -231,13 +231,13 @@ module FlexiAdmin::Components::Resource
       res = resource.present? ? resource : @resource
       val = value.is_a?(Proc) ? value.call : res.try(attr_name) || value
 
-      render(Resource::ButtonSelectComponent.new(res,
-                                                attr_name,
-                                                options,
-                                                disabled:,
-                                                form: @form,
-                                                value: val,
-                                                **html_options))
+      render(FlexiAdmin::Components::Resource::ButtonSelectComponent.new(res,
+                                                                         attr_name,
+                                                                         options,
+                                                                         disabled:,
+                                                                         form: @form,
+                                                                         value: val,
+                                                                         **html_options))
     end
 
     def render_form_row(attr_name, field_html, label:, **html_options)

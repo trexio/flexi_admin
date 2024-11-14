@@ -13,7 +13,7 @@ module FlexiAdmin::Components::Helpers::ValueFormatter
   end
 
   def as_navigation(value)
-    link_to value, value, 'data-turbo-frame': '_top'
+    helpers.link_to value, value, 'data-turbo-frame': '_top'
   end
 
   def format(formatter)

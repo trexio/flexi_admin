@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class Observation::View::ListViewComponent < Resources::ListViewComponent
+class Observation::View::ListViewComponent < FlexiAdmin::Components::Resources::ListViewComponent
 end

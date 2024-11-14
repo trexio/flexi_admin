@@ -6,7 +6,7 @@ module FlexiAdmin::Controllers::ModalsController
 
     raise ArgumentError, "scope is required" if context_params.scope.blank?
 
-    context = Resources::Context.from_params(context_params)
+    context = FlexiAdmin::Models::Resources::Context.from_params(context_params)
 
     render turbo_stream: turbo_stream.update("modalx_#{context.scope}", component_class.new(context))
   end

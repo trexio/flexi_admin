@@ -16,13 +16,15 @@ module FlexiAdmin::Components::Resources
       end
 
       def src(image, variant: nil)
+        binding.pry if Rails.env.development? && !defined?(@@once)
+        @@once = true
         raise "ActiveStorage::Attached::One required, got #{image.class}" if image.class != ActiveStorage::Attached::One
 
         return unless variant && image.attached?
 
-        url_for(image.variant(variant))
+        helpers.url_for(image.variant(variant))
       rescue ActiveStorage::InvariableError
-        url_for(image)
+        helpers.url_for(image)
       end
 
       def media_type(resource)
@@ -44,11 +46,14 @@ module FlexiAdmin::Components::Resources
       yield
 
       grid
+    rescue StandardError => e
+      binding.pry if Rails.env.development?
     end
 
     def grid
-      render Resources::GridView::GridComponent.new(resources, title_element, header_element, description_element,
-                                                    image_element, context)
+      render FlexiAdmin::Components::Resources::GridView::GridComponent.new(resources, title_element, header_element,
+                                                                            description_element,
+                                                                            image_element, context)
     end
 
     def render?

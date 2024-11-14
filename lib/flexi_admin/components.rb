@@ -10,6 +10,7 @@ module FlexiAdmin
     module Resources
       module ListView; end
       module GridView; end
+      module BulkAction; end
     end
 
     module Shared; end
@@ -72,3 +73,9 @@ require_relative "components/resources/list_view/table_component"
 # Resources Grid View Components
 require_relative "components/resources/grid_view/card_component"
 require_relative "components/resources/grid_view/grid_component"
+require_relative "components/resources/grid_view_component"
+require_relative "components/resources/list_view_component"
+
+# Bulk Action Components
+require_relative "components/resources/bulk_action/modal_component"
+require_relative "components/resources/bulk_action/button_component"

@@ -2,7 +2,7 @@
   - if disabled && data_list?
     = value
   - elsif disabled && !data_list?
-      = link_to resource&.ac_title, resource_path(resource), data: { turbo_frame: '_top' }
+      = helpers.link_to resource&.ac_title, resource_path(resource), data: { turbo_frame: '_top' }
   - else
     .input-group style="width: #{width || '100%'}"
       .input-group-text id="button-addon1"

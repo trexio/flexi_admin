@@ -17,15 +17,14 @@ require_relative "flexi_admin/version"
 # Config
 require_relative "flexi_admin/config"
 
+# Helpers
+require_relative "flexi_admin/helpers"
+
 # Core modules
 require_relative "flexi_admin/controllers"
 require_relative "flexi_admin/components"
 require_relative "flexi_admin/models"
 require_relative "flexi_admin/services"
-
-# Helpers
-require_relative "flexi_admin/helpers"
-
 # Railtie
 require "flexi_admin/railtie" if defined?(Rails)
 

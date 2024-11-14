@@ -30,6 +30,12 @@ module FlexiAdmin
     #   end
     # end
 
+    # initializer "flexi_admin.helpers" do
+    #   ActiveSupport.on_load(:action_controller) do
+    #     include FlexiAdmin::Helpers::ApplicationHelper
+    #   end
+    # end
+
     def absolute_gem_path(path)
       [Gem::Specification.find_by_name("flexi_admin").gem_dir, path].join("/")
     end
