@@ -1,9 +1,9 @@
 = turbo_frame_tag 'toasts'
   .toast-container.top-0.end-0.p-3
     - flash.each_with_index do |(type, object), i|
-      - object = object if object.is_a?(FlexiAdmin::Models::)
+      - object = object if object.is_a?(FlexiAdmin::Models::Toast)
       - object = FlexiAdmin::Models::Toast.new(object) if object.is_a?(String)
-      - object = FlexiAdmin::Models::Toast.new(object['message'], delay: object['delay'] || FlexiAdmin::Models::::DELAY) if object.is_a?(Hash)
+      - object = FlexiAdmin::Models::Toast.new(object['message'], delay: object['delay'] || FlexiAdmin::Models::DELAY) if object.is_a?(Hash)
 
       .toast.show.align-items-center.text-bg-primary.border-0.opacity-75 [role="alert"
                         aria-live="assertive"

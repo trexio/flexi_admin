@@ -14,8 +14,10 @@ nav.navbar.bg-body-tertiary.h-100.align-items-start
             hr
           - else
             - if link[:icon]
+              /a href="#{link[:path]}" class="nav-link #{helpers.active(link[:path])}"
               = helpers.link_to link[:path], class: "nav-link #{helpers.active(link[:path])}"
                 i.bi.me-2 class="bi-#{link[:icon]} #{helpers.active(link[:path]) ? 'text-danger' : ''}"
                 span class="#{helpers.active(link[:path]) ? 'fw-semibold' : ''}" = link[:name]
             - else
               = helpers.link_to link[:name], link[:path], class: "nav-link #{helpers.active(link[:path])}"
+              /a href="#{link[:path]}" class="nav-link #{helpers.active(link[:path])}" = link[:name]

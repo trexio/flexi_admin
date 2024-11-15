@@ -3,7 +3,8 @@
     li [data-action="#{data_action}"
         data-autocomplete-resource-id-value="#{result.try(:id)}"]
       - if action == 'show'
-        = helpers.link_to main_app.send(path, result.id), class: 'text-primary text-decoration-none' do
+        /= helpers.link_to main_app.send(path, result.id), class: 'text-primary text-decoration-none' do
+        a.text-primary.text-decoration-none href="#{main_app.send(path, result.id)}"
           = value(result)
       - else
         = value(result)

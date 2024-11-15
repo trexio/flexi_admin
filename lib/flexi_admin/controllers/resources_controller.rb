@@ -8,6 +8,26 @@ module FlexiAdmin::Controllers::ResourcesController
     before_action :context_params
   end
 
+  def render_toasts
+    render turbo_stream: turbo_stream.append('toasts', partial: 'shared/toasts')
+  end
+
+  def append_toasts
+    turbo_stream.append('toasts', partial: 'shared/toasts')
+  end
+
+  # Deprecated
+  def reload_page
+    render turbo_stream: [
+      turbo_stream.append('system', partial: 'shared/reload'),
+      turbo_stream.append('toasts', partial: 'shared/toasts')
+    ]
+  end
+
+  def redirect_to_path(path)
+    render turbo_stream: turbo_stream.append('system', partial: 'shared/redirect', locals: { path: })
+  end
+
   def context_params
     @context_params ||= FlexiAdmin::Models::ContextParams.new(context_permitted_params)
   end

@@ -14,6 +14,7 @@ module FlexiAdmin::Components::Helpers::ValueFormatter
 
   def as_navigation(value)
     helpers.link_to value, value, 'data-turbo-frame': '_top'
+    # content_tag(:a, value, href: value, 'data-turbo-frame': '_top')
   end
 
   def format(formatter)

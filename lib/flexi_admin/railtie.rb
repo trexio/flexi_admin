@@ -36,6 +36,16 @@ module FlexiAdmin
     #   end
     # end
 
+    initializer "flexi_admin.add_view_paths" do |_app|
+      # Assuming your gem has a `app/views` directory
+      custom_views_path = File.expand_path("../flexi_admin/views", __dir__)
+
+      # Add the path to the application's view paths
+      ActiveSupport.on_load(:action_controller) do
+        ActionController::Base.prepend_view_path(custom_views_path)
+      end
+    end
+
     def absolute_gem_path(path)
       [Gem::Specification.find_by_name("flexi_admin").gem_dir, path].join("/")
     end

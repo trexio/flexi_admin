@@ -2,6 +2,7 @@
 
 module FlexiAdmin::Components::Helpers::LinkHelper
   def navigate_to(title, resource)
-    link_to title, resource, "data-turbo-frame": "_top"
+    helpers.link_to title, resource, "data-turbo-frame": "_top"
+    # content_tag(:a, title, href: resource, "data-turbo-frame": "_top")
   end
 end
