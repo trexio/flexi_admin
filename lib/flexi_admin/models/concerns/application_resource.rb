@@ -2,10 +2,7 @@
 
 module FlexiAdmin::Models::Concerns::ApplicationResource
   extend ActiveSupport::Concern
-
-  included do
-    include FlexiAdmin::Models::Concerns::Parentable
-  end
+  include FlexiAdmin::Models::Concerns::Parentable
 
   def identifier
     "#{self.class.name.underscore}_#{id}"

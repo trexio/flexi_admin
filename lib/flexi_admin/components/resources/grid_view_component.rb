@@ -8,7 +8,7 @@ module FlexiAdmin::Components::Resources
     include FlexiAdmin::Components::Helpers::Selectable
     include FlexiAdmin::Components::Helpers::LinkHelper
 
-    class Element < Struct.new(:attribute, :value, :options)
+    class Element < Struct.new(:attribute, :value, :options, :main_app)
       include FlexiAdmin::Components::Helpers::UrlHelper
 
       def formatted_value(value)
@@ -16,15 +16,13 @@ module FlexiAdmin::Components::Resources
       end
 
       def src(image, variant: nil)
-        binding.pry if Rails.env.development? && !defined?(@@once)
-        @@once = true
         raise "ActiveStorage::Attached::One required, got #{image.class}" if image.class != ActiveStorage::Attached::One
 
         return unless variant && image.attached?
 
-        helpers.url_for(image.variant(variant))
+        main_app.url_for(image.variant(variant))
       rescue ActiveStorage::InvariableError
-        helpers.url_for(image)
+        main_app.url_for(image)
       end
 
       def media_type(resource)
@@ -64,7 +62,7 @@ module FlexiAdmin::Components::Resources
     def image(src_attribute, **options, &block)
       value = block || proc { |resource| resource.send(src_attribute) }
 
-      self.image_element = Element.new(src_attribute, value, options)
+      self.image_element = Element.new(src_attribute, value, options, main_app)
     end
 
     def title(attribute, **options, &block)

@@ -13,7 +13,9 @@ module FlexiAdmin
       module BulkAction; end
     end
 
-    module Shared; end
+    module Shared
+      module Table; end
+    end
   end
 end
 
@@ -65,6 +67,7 @@ require_relative "components/shared/datalist_component"
 require_relative "components/shared/medium_component"
 require_relative "components/shared/table/header_item_component"
 require_relative "components/shared/trix_component"
+require_relative "components/shared/link_component"
 
 # Resources List View Components
 require_relative "components/resources/list_view/cell_component"

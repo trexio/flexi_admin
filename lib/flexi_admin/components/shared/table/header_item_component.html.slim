@@ -1,7 +1,6 @@
 div class="#{merged_classes}"
   - if column.sortable?
-    = helpers.link_to sort_path, class: "a text-decoration-none text-secondary",
-                                data: { controller: "table-header-item" }
+    = render FlexiAdmin::Components::Shared::LinkComponent.new(label, sort_path, class: "a text-decoration-none text-secondary", data: { controller: "table-header-item" })
       .d-flex class="#{justify_class}"
         = label
         i.bi.text-primary.opacity-75.ms-2 class="#{sort_icon}"

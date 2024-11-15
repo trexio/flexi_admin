@@ -29,7 +29,7 @@ module FlexiAdmin::Controllers::ResourcesController
     create_service = begin
       "#{resource_class.model_name.plural.camelize}::Services::Create".constantize
     rescue NameError
-      Generic::Services::Create
+      FlexiAdmin::Services::CreateResource
     end
 
     result = create_service.run(resource_class:, params: create_params)
@@ -64,7 +64,7 @@ module FlexiAdmin::Controllers::ResourcesController
     update_service = begin
       "#{resource_class.model_name.plural.camelize}::Services::Update".constantize
     rescue NameError
-      Generic::Services::Update
+      FlexiAdmin::Services::UpdateResource
     end
 
     result = update_service.run(resource: @resource, params: resource_params)

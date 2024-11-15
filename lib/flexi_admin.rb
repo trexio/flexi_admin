@@ -25,11 +25,20 @@ require_relative "flexi_admin/controllers"
 require_relative "flexi_admin/components"
 require_relative "flexi_admin/models"
 require_relative "flexi_admin/services"
-# Railtie
-require "flexi_admin/railtie" if defined?(Rails)
 
-# Routes
-require "flexi_admin/routes"
+begin
+  # Railtie
+  require "flexi_admin/railtie" if defined?(Rails)
+rescue LoadError
+  puts "FlexiAdmin::Railtie not loaded"
+end
+
+begin
+  # Routes
+  require "flexi_admin/routes"
+rescue LoadError
+  puts "FlexiAdmin::Routes not loaded"
+end
 
 module FlexiAdmin
   class Error < StandardError; end

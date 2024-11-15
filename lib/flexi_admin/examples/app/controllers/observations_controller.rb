@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-class ObservationsController < ResourcesController
+class ObservationsController < AdminController
+  include FlexiAdmin::Controllers::ResourcesController
   def index
     @observations = Observation.preload(:inspected_element).with_parent(locate_resource(context_params.parent))
     @observations = if params[:order] && params[:sort]

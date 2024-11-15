@@ -8,12 +8,12 @@ module FlexiAdmin
       # Delegate main_app to view context
       delegate :main_app, to: :helpers
 
-      def render(*args)
-        super(*args)
-      rescue StandardError => e
-        binding.pry if Rails.env.development? && !defined?(@@once)
-        @@once = true
-      end
+      # def render(*args)
+      #   super(*args)
+      # rescue StandardError => e
+      #   binding.pry if Rails.env.development? && !defined?(@@once)
+      #   @@once = true
+      # end
     end
   end
 end

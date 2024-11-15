@@ -1,4 +1,4 @@
-.autocomplete [data-controller="autocomplete"]
+.autocomplete [data-controller="#{ disabled ? '' : 'autocomplete' }"]
   - if disabled && data_list?
     = value
   - elsif disabled && !data_list?
