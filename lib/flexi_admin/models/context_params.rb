@@ -19,8 +19,6 @@ module FlexiAdmin::Models
 
     def self.permitted_params_keys
       MAP.values
-         .map { |value| value.is_a?(Hash) ? value.keys.first : value }
-         .map(&:to_sym)
     end
 
     def self.permitted_keys
