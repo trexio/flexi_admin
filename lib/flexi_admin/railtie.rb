@@ -1,4 +1,6 @@
 require "rails"
+
+# Don't need this for now
 # require "flexi_admin/engine"
 
 module FlexiAdmin
