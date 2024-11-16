@@ -14,7 +14,16 @@ Steps required to get FlexiAdmin working with a Rails app:
 
 3. add `import "flexi_admin";` to the `app/javascript/application.js` file
 
-# Temporary requirements
+# Temporary (workaround) requirements
+
+- can't get stylesheets to load from gem, so adding to host app:
+
+```scss
+// Production
+// @import "flexi_admin.scss";
+// Local dev
+// @import "../../flexi_admin/app/assets/stylesheets/flexi_admin";
+```
 
 - add modals controller:
 
