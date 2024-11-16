@@ -5,7 +5,7 @@ PATH
       actionview (~> 7.1)
       activesupport (~> 7.1)
       slim-rails
-      view_component (~> 3.5)
+      view_component (= 3.20)
       will_paginate
       will_paginate-bootstrap-style
 
