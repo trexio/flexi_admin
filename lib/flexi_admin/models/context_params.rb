@@ -3,15 +3,15 @@
 module FlexiAdmin::Models
   class ContextParams
     MAP = {
-      scope: 'x_scope',
-      page: 'x_page',
-      per_page: 'x_per_page',
-      parent: 'x_parent',
-      frame: 'x_frame', # target turbolinks frame
-      sort: 'x_sort',
-      order: 'x_order',
-      form_disabled: 'x_form_disabled',
-      view: 'x_view',
+      scope: 'fa_scope',
+      page: 'fa_page',
+      per_page: 'fa_per_page',
+      parent: 'fa_parent',
+      frame: 'fa_frame', # target turbolinks frame
+      sort: 'fa_sort',
+      order: 'fa_order',
+      form_disabled: 'fa_form_disabled',
+      view: 'fa_view',
       ac_action: 'ac_action', # autocomplete action
       ac_fields: { 'ac_fields': [] }, # autocomplete result fields
       ac_path: 'ac_path' # autocomplete path for opening resource in new window
@@ -101,6 +101,7 @@ module FlexiAdmin::Models
       params[:frame] || '_top'
     end
 
+    # Not sure if this is needed
     def scope
       params[:scope]
     end

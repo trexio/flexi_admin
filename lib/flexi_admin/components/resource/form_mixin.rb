@@ -134,7 +134,7 @@ module FlexiAdmin::Components::Resource
     def submit(label = 'Uložit', cancel_button: true, cancel_button_url: nil)
       submit_button = helpers.submit_tag(label, class: 'btn btn-primary', disabled:)
       if cancel_button
-        cancel_btn_path = cancel_button_url || edit_resource_path(resource, x_form_disabled: true)
+        cancel_btn_path = cancel_button_url || edit_resource_path(resource, fa_form_disabled: true)
         cancel_btn = content_tag(:button, 'Zrušit', class: 'btn btn-outline-secondary',
                                                     disabled:,
                                                     data: { controller: 'form',

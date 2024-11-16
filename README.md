@@ -13,3 +13,21 @@ Steps required to get FlexiAdmin working with a Rails app:
 **JavaScript**
 
 3. add `import "flexi_admin";` to the `app/javascript/application.js` file
+
+# Temporary requirements
+
+- add modals controller:
+
+```
+# frozen_string_literal: true
+
+class ModalsController < AdminController
+  include FlexiAdmin::Controllers::ModalsController
+end
+```
+
+```ruby
+  resources :modals, only: [] do
+    get :show, on: :collection
+  end
+```

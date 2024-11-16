@@ -7,7 +7,7 @@ module FlexiAdmin::Components::Helpers::ResourceHelper
     payload = {
       ac_action: action,
       ac_path: resource__path,
-      x_parent: parent&.gid_param,
+      fa_parent: parent&.gid_param,
       ac_fields: fields
     }
     main_app.send("autocomplete_#{scope_plural}_path", params: payload)
