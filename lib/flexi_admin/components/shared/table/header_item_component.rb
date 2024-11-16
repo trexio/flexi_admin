@@ -2,7 +2,7 @@
 
 module FlexiAdmin::Components::Shared::Table
   class HeaderItemComponent < FlexiAdmin::Components::BaseComponent
-    attr_reader :column, :attr, :justify, :width
+    attr_reader :column, :attr, :justify, :width, :sort_by
 
     def initialize(column)
       @column = column
@@ -18,9 +18,11 @@ module FlexiAdmin::Components::Shared::Table
     end
 
     def sort_path
-      return request.path if order.blank?
-
-      request.path + "?sort=#{attr}&order=#{order}"
+      if order.blank?
+        view_context.context.params.to_path(request.path)
+      else
+        view_context.context.params.merge({ sort: sort_by, order: }).to_path(request.path)
+      end
     end
 
     def merged_classes
@@ -43,9 +45,9 @@ module FlexiAdmin::Components::Shared::Table
     end
 
     def sort_icon
-      return "bi-arrow-up-square" if params[:sort].to_s != attr.to_s
+      return "bi-arrow-up-square" if view_context.context.params[:sort].to_s != sort_by.to_s
 
-      case params[:order]
+      case view_context.context.params[:order]
       when "asc"
         "bi-arrow-up-square-fill"
       when "desc"
@@ -56,18 +58,21 @@ module FlexiAdmin::Components::Shared::Table
     end
 
     def order
-      return "asc" if params[:sort].to_s != attr.to_s
+      # Sorting by other column, so we need to reset the order
+      return "asc" if view_context.context.params[:sort].to_s != sort_by.to_s
 
-      case params[:order]
+      order = case view_context.context.params[:order]
       when "asc"
         "desc"
       when "desc"
-        nil
-      when "original"
+        "default"
+      when "default"
         "asc"
       else
         "asc"
       end
+
+      order
     end
   end
 end

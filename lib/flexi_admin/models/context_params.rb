@@ -8,6 +8,8 @@ module FlexiAdmin::Models
       per_page: 'x_per_page',
       parent: 'x_parent',
       frame: 'x_frame', # target turbolinks frame
+      sort: 'x_sort',
+      order: 'x_order',
       form_disabled: 'x_form_disabled',
       view: 'x_view',
       ac_action: 'ac_action', # autocomplete action
@@ -16,7 +18,13 @@ module FlexiAdmin::Models
     }
 
     def self.permitted_params_keys
-      MAP.values.map
+      MAP.values
+         .map { |value| value.is_a?(Hash) ? value.keys.first : value }
+         .map(&:to_sym)
+    end
+
+    def self.permitted_keys
+      MAP.keys.map(&:to_sym)
     end
 
     def self.params_map
@@ -33,9 +41,20 @@ module FlexiAdmin::Models
       end.with_indifferent_access
     end
 
+    def [](key)
+      @params[key]
+    end
+
     def merge(params)
       new_params = @params.dup.merge(params.to_h.with_indifferent_access)
-      new_params = new_params.transform_keys { |key| self.class.params_map[key.to_sym] }
+
+      if params.keys.any? { |key| !self.class.permitted_keys.include?(key.to_sym) }
+        msg = "ContextParams: invalid params: "
+        msg += params.keys.select { |key| !self.class.permitted_keys.include?(key.to_sym) }.join(", ")
+        Rails.logger.warn msg
+      end
+
+      new_params = new_params.transform_keys { |key| self.class.params_map[key.to_sym] || key.to_sym }
 
       self.class.new(new_params)
     end
@@ -60,6 +79,10 @@ module FlexiAdmin::Models
     def to_params
       self.class.params_map.map { |k, v| [v, params[k]] }
           .reject { |_k, v| v.blank? }.to_h
+    end
+
+    def to_path(path)
+      path + "?" + to_params.to_query
     end
 
     def parent
@@ -92,6 +115,14 @@ module FlexiAdmin::Models
 
     def pagination
       { page:, per_page: }
+    end
+
+    def sort
+      params[:sort]
+    end
+
+    def order
+      params[:order]
     end
   end
 end

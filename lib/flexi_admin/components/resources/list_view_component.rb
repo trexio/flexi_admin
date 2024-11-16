@@ -22,7 +22,7 @@ module FlexiAdmin::Components::Resources
       end
 
       def sort_by
-        options[:sortable].presence || attribute
+        options[:sortable].is_a?(TrueClass) ? attribute : options[:sortable]
       end
 
       def formatted_value(value)

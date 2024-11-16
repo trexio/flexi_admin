@@ -182,4 +182,16 @@ module FlexiAdmin::Controllers::ResourcesController
   def resource_class
     controller_name.classify.constantize
   end
+
+  def fa_sorted?
+    fa_sort.present? && fa_order.present? && fa_order != "default"
+  end
+
+  def fa_sort
+    context_params[:sort]
+  end
+
+  def fa_order
+    context_params[:order]
+  end
 end
