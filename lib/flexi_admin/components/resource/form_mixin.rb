@@ -206,8 +206,13 @@ module FlexiAdmin::Components::Resource
       selected = value.is_a?(Proc) ? value.call : resource.try(attr_name) || value
 
       content = []
-      content << content_tag(:select, name: attr_name, class: 'form-select',
-                                      data: data.merge(html_options), disabled:) do
+      content << content_tag(:select,
+                              {
+                                name: attr_name,
+                                class: 'form-select',
+                                data: data,
+                                disabled:
+                              }.merge(html_options)) do
         options_for_select(options, selected)
       end
       if resource.present? && attr_name.present?
