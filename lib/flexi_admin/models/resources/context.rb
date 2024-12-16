@@ -15,6 +15,10 @@ module FlexiAdmin::Models::Resources
       resources
     end
 
+    def self.build(resource: nil, scope: nil, params: FlexiAdmin::Models::ContextParams.new({}), **options)
+      new(resource, scope, params, options)
+    end
+
     def self.from_params(context_params, resources = nil)
       parent = load_parent(context_params)
 
