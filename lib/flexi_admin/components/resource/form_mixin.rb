@@ -223,7 +223,7 @@ module FlexiAdmin::Components::Resource
                                 data: data,
                                 disabled:
                               }.merge(html_options)) do
-        options_for_select(options, selected)
+        options_for_select(options, selected: selected, disabled: 'disabled')
       end
       if resource.present? && attr_name.present?
         content << content_tag(:div, class: 'invalid-feedback') do
