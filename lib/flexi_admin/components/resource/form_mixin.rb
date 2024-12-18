@@ -131,8 +131,18 @@ module FlexiAdmin::Components::Resource
       render_custom_field(view_component_instance, label, html_options, value)
     end
 
-    def submit(label = 'Uložit', cancel_button: true, cancel_button_url: nil)
-      submit_button = helpers.submit_tag(label, class: 'btn btn-primary', disabled:)
+    def submit(label = 'Uložit', cancel_button: true, cancel_button_url: nil, icon: nil, classes: '')
+      submit_button = if icon.present?
+        helpers.content_tag(:button, class: 'btn btn-primary ' + classes, disabled: disabled) do
+          content = []
+          content << helpers.content_tag(:i, '', class: "bi bi-#{icon} me-2")
+          content << label
+          content.join.html_safe
+        end
+      else
+        helpers.submit_tag(label, class: 'btn btn-primary ' + classes, disabled:)
+      end
+
       if cancel_button
         cancel_btn_path = cancel_button_url || edit_resource_path(resource, fa_form_disabled: true)
         cancel_btn = content_tag(:button, 'Zrušit', class: 'btn btn-outline-secondary',
