@@ -120,7 +120,10 @@ module FlexiAdmin::Controllers::ResourcesController
 
   def bulk_action
     ids = JSON.parse(params[:ids])
-    @resources = resource_class.where(id: ids)
+
+    # Unscoped is needed to get the resources that are not deleted, archived, etc.
+    # It should be ok, since we control the ids in the frontend
+    @resources = resource_class.unscoped.where(id: ids)
 
     bulk_processor = "#{params[:processor].gsub('-', '/').camelize}::Processor".constantize.new(@resources, params)
     result = bulk_processor.perform

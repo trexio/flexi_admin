@@ -5,6 +5,10 @@ module FlexiAdmin::Components::Resources::BulkAction
     include FlexiAdmin::Components::Resource::FormMixin
     extend FlexiAdmin::Components::Helpers::ActionButtonHelper
 
+    class << self
+      attr_accessor :class_name
+    end
+
     attr_reader :context
 
     renders_one :modal_form
@@ -22,13 +26,13 @@ module FlexiAdmin::Components::Resources::BulkAction
       end
     end
 
-    def form(url: bulk_action_path(scope), method: :post, **html_options, &block)
+    def form(url: self.class.path, method: :post, **html_options, &block)
       super(url:, css_class: 'modalForm section', method:, **html_options, &block)
     end
 
     # /observation_images/bulk_action
     def self.path
-      resource = to_s.split('::').first.underscore.gsub('/', '-')
+      resource = (self.class_name&.to_s || to_s).split('::').first.underscore.gsub('/', '-')
       "/#{resource.pluralize}/bulk_action"
     end
 
@@ -44,6 +48,7 @@ module FlexiAdmin::Components::Resources::BulkAction
       context.options[:title] = self.class.title_text
       context.options[:modal_id] = self.class.modal_id
       context.options[:action_path] = self.class.path
+      context.options[:class_name] = self.class.to_s
     end
   end
 end
