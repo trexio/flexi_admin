@@ -4,6 +4,7 @@ module FlexiAdmin::Components::Resource
   class ShowPageComponent < FlexiAdmin::Components::BaseComponent
     include FlexiAdmin::Components::Helpers::ResourceHelper
     include FlexiAdmin::Components::Helpers::ActionHelper
+
     attr_reader :resource, :context_params, :disabled
 
     def initialize(resource, context_params:, scope: nil, disabled: true)
