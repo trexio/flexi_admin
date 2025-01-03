@@ -31,4 +31,15 @@ namespace :flexi_admin do
     # Join paths with ':' and return the joined path
     puts sass_paths.join(":")
   end
+
+  desc "Setup node path"
+  task :node_path do
+    gem_path = Gem::Specification.find_by_name("flexi_admin").gem_dir
+
+    node_paths ||= []
+    node_paths << "./node_modules"
+    node_paths << "#{gem_path}/lib/flexi_admin/javascript"
+
+    puts node_paths.join(":")
+  end
 end
