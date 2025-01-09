@@ -41,6 +41,9 @@ rescue LoadError
 end
 
 module FlexiAdmin
+  # Temporary fix to solve admin files namespaced in Admin namespace
+  NAMESPACE = "Admin"
+
   class Error < StandardError; end
 
   class << self

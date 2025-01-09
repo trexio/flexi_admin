@@ -164,7 +164,7 @@ module FlexiAdmin::Controllers::ResourcesController
   end
 
   def edit_form_component_instance(disabled)
-    "#{@resource.class.name}::Show::EditFormComponent".constantize.new(@resource, disabled:)
+    [FlexiAdmin::NAMESPACE, "#{@resource.class.name}::Show::EditFormComponent"].join("::").constantize.new(@resource, disabled:)
   end
 
   def new_form_component_instance(resource)
