@@ -55,7 +55,7 @@ module FlexiAdmin::Controllers::ResourcesController
     result = create_service.run(resource_class:, params: create_params)
 
     if result.valid?
-      redirect_to_path polymorphic_path(result.resource)
+      redirect_to_path polymorphic_path([:admin, result.resource])
     else
       render_new_resource_form(result.resource)
     end

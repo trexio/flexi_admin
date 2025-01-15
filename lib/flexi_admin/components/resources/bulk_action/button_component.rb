@@ -23,7 +23,7 @@ module FlexiAdmin::Components::Resources::BulkAction
     end
 
     def scoped_url_with_modal_id
-      main_app.modals_path(kind: modal_class.modal_id, **context.to_params)
+      main_app.admin_modals_path(kind: modal_class.modal_id, **context.to_params)
     end
   end
 end
