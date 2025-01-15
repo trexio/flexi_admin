@@ -7,6 +7,7 @@ module FlexiAdmin::Services::CodeGen
     SYSTEM_PROMPT_FILENAME = 'prompts/codegen-system-prompt.md'
     OUTPUT_PROMPT_FILE = 'tmp/prompt-submitted.md'
     OUTPUT_CODE_FILE = 'tmp/code_gen.json'
+
     def execute(text)
       prompt = prompt(text)
       File.write OUTPUT_PROMPT_FILE, prompt
@@ -65,10 +66,10 @@ module FlexiAdmin::Services::CodeGen
       objects.each do |object|
         result << "# Description\n"
         result << "#{object.description}\n\n# Files\n"
-        object.files.each do |file|
-          path = resolve_file_path(file)
-          result << "/# #{file.sub(%r{^#{EXAMPLES_DIR}/}, '')}\n"
-          result << "#{File.read(path)}\n\n" # Fetch from examples/ directory
+        object.files.each do |example_file|
+          real_path = example_file.gsub(EXAMPLES_DIR + '/', '')
+          result << "/# #{real_path}\n"
+          result << "#{File.read(example_file)}\n\n" # Fetch from examples/ directory
         end
       end
       result
@@ -90,34 +91,34 @@ module FlexiAdmin::Services::CodeGen
     def resource_files
       {
         show_views: [
-          "#{EXAMPLES_DIR}/app/components/observation/show/edit_form_component.html.slim",
-          "#{EXAMPLES_DIR}/app/components/observation/show/edit_form_component.rb",
-          "#{EXAMPLES_DIR}/app/components/observation/show/page_component.html.slim",
-          "#{EXAMPLES_DIR}/app/components/observation/show/page_component.rb",
-          "#{EXAMPLES_DIR}/app/views/observations/show.html.slim"
+          "#{EXAMPLES_DIR}/app/components/admin/observation/show/edit_form_component.html.slim",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/show/edit_form_component.rb",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/show/page_component.html.slim",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/show/page_component.rb",
+          "#{EXAMPLES_DIR}/app/views/admin/observations/show.html.slim"
 
         ],
         index_views: [
-          "#{EXAMPLES_DIR}/app/components/observation/index_page_component.html.slim",
-          "#{EXAMPLES_DIR}/app/components/observation/index_page_component.rb",
-          "#{EXAMPLES_DIR}/app/components/observation/resources_component.html.slim",
-          "#{EXAMPLES_DIR}/app/components/observation/resources_component.rb",
-          "#{EXAMPLES_DIR}/app/components/observation/view/grid_view_component.html.slim",
-          "#{EXAMPLES_DIR}/app/components/observation/view/grid_view_component.rb",
-          "#{EXAMPLES_DIR}/app/components/observation/view/list_view_component.html.slim",
-          "#{EXAMPLES_DIR}/app/components/observation/view/list_view_component.rb",
-          "#{EXAMPLES_DIR}/app/views/observations/index.html.slim",
-          "#{EXAMPLES_DIR}/app/components/nav/navbar_component.rb"
+          "#{EXAMPLES_DIR}/app/components/admin/observation/index_page_component.html.slim",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/index_page_component.rb",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/resources_component.html.slim",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/resources_component.rb",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/view/grid_view_component.html.slim",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/view/grid_view_component.rb",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/view/list_view_component.html.slim",
+          "#{EXAMPLES_DIR}/app/components/admin/observation/view/list_view_component.rb",
+          "#{EXAMPLES_DIR}/app/views/admin/observations/index.html.slim",
+          "#{EXAMPLES_DIR}/app/components/admin/nav/navbar_component.rb"
         ],
         bulk_actions: [
-          "#{EXAMPLES_DIR}/app/components/observation_image/action/delete_image.html.slim",
-          "#{EXAMPLES_DIR}/app/components/observation_image/action/delete_image.rb"
+          "#{EXAMPLES_DIR}/app/components/admin/observation_image/action/delete_image.html.slim",
+          "#{EXAMPLES_DIR}/app/components/admin/observation_image/action/delete_image.rb"
         ],
         models: [
           "#{EXAMPLES_DIR}/app/models/observation.rb"
         ],
         controllers: [
-          "#{EXAMPLES_DIR}/app/controllers/observations_controller.rb"
+          "#{EXAMPLES_DIR}/app/controllers/admin/observations_controller.rb"
         ],
         config: [
           "#{EXAMPLES_DIR}/db/schema.rb",
@@ -129,10 +130,12 @@ module FlexiAdmin::Services::CodeGen
     def update_resource_examples
       resource_files.each do |_type, files|
         files.each do |file|
-          destination = "examples/#{file}"
+          source = file.gsub(EXAMPLES_DIR + '/', '')
+          destination = file
           dirname = File.dirname(destination)
+
           FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
-          FileUtils.cp(file, destination)
+          FileUtils.cp(source, destination)
         end
       end
     end

@@ -8,6 +8,10 @@ namespace :flexi_admin do
     FlexiAdmin::Services::CodeGen.execute(prompt)
   end
 
+  task :update_code_examples do
+    FlexiAdmin::Services::CodeGen::Runner.new.update_resource_examples
+  end
+
   desc "Setup SASS path"
   task :sass_path do
     # !/usr/bin/env ruby
