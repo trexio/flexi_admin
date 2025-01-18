@@ -5,7 +5,7 @@ namespace :flexi_admin do
 
     abort "prompt is required" if prompt.nil? || prompt.strip.empty?
 
-    FlexiAdmin::Services::CodeGen::Runner.new(model: :gemini).execute(prompt)
+    FlexiAdmin::Services::CodeGen::Runner.new(model: :gemini_flash).execute(prompt)
   end
 
   task :update_code_examples do
