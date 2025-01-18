@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "actionview", ">= 7.1", "< 9"
   spec.add_dependency "activesupport", ">= 7.1", "< 9"
+  spec.add_dependency "gemini-ai"
   spec.add_dependency "slim-rails"
   spec.add_dependency "view_component", "= 3.20"
   spec.add_dependency "will_paginate"

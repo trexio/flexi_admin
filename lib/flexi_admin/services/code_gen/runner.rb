@@ -5,20 +5,28 @@ module FlexiAdmin::Services::CodeGen
 
   class Runner
     SYSTEM_PROMPT_FILENAME = 'prompts/codegen-system-prompt.md'
-    OUTPUT_PROMPT_FILE = 'tmp/prompt-submitted.md'
-    OUTPUT_CODE_FILE = 'tmp/code_gen.json'
+    OUTPUT_PROMPT_FILE = 'tmp/code_gen_prompt.md'
+    OUTPUT_CODE_FILE = 'tmp/code_gen_parsed_response.json'
+
+    attr_reader :client, :model
+
+    def initialize(client: :gemini, model: :gemini_flash)
+      @client = resolve_client(client)
+      @model = model
+    end
 
     def execute(text)
       prompt = prompt(text)
       File.write OUTPUT_PROMPT_FILE, prompt
 
-      result = FlexiAdmin::Services::CodeGen::Gpt.new.chat prompt, format: :json, model: Gpt::GPT_4o_mini
+      result = client.new.chat prompt, format: :json, model: model
       File.write OUTPUT_CODE_FILE, result.as_json.to_json
       execute_response(result.as_json.dig('files'))
 
       result
     rescue StandardError => e
-      binding.pry
+      binding.pry if Rails.env.development?
+      raise e
     end
 
     def execute_response(array_of_hashes)
@@ -186,6 +194,17 @@ module FlexiAdmin::Services::CodeGen
       DESCRIPTION
 
       OpenStruct.new(description:, files: resource_files[:config])
+    end
+
+    def resolve_client(client)
+      case client
+      when :gpt
+        FlexiAdmin::Services::CodeGen::Gpt
+      when :gemini
+        FlexiAdmin::Services::CodeGen::Gemini
+      else
+        raise "Unknown client: #{client}, expected :gpt or :gemini"
+      end
     end
   end
 end

@@ -11,3 +11,4 @@ end
 require_relative "code_gen/runner"
 require_relative "code_gen/code_export"
 require_relative "code_gen/gpt"
+require_relative "code_gen/gemini"

@@ -7,6 +7,8 @@ module FlexiAdmin::Services::CodeGen
     GPT_4 = 'gpt-4-turbo-2024-04-09'
     GPT_4o = 'gpt-4o'
     GPT_4o_mini = 'gpt-4o-mini'
+    GPT_o1 = 'gpt-o1'
+    GPT_o1_mini = 'o1-mini'
 
     class Response
       attr_reader :response
@@ -39,17 +41,28 @@ module FlexiAdmin::Services::CodeGen
       @client = OpenAI::Client.new log_errors: true
     end
 
-    def chat(message, format: 'text', model: GPT_4o)
+    def chat(message, format: 'text', model: GPT_4o, temperature: nil)
+      temperature ||= resolve_temperature(model)
+
       response = client.chat(
         parameters: {
           model: model,
           response_format: { type: format.to_s == 'json' ? 'json_object' : 'text' },
           messages: [{ role: 'user', content: message }],
-          temperature: 0.7
+          temperature: temperature
         }
       )
 
       Response.new(response, format:)
+    end
+
+    def resolve_temperature(model)
+      case model
+      when GPT_o1, GPT_o1_mini
+        1
+      else
+        0.7
+      end
     end
   end
 end
