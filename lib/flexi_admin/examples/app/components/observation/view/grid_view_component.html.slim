@@ -1,7 +1,0 @@
-// CodeGen: pick most probable attributes for title and description
-= grid_view do
-  - selectable
-  - image(:cover_image) { |observation| observation.cover_image&.image }
-  - title :description
-  - header(:element) { |observation| observation.element&.name&.upcase }
-  - description(:remedy)

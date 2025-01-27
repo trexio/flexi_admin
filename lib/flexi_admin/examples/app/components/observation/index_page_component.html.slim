@@ -1,8 +1,0 @@
-= render FlexiAdmin::Components::Resources::IndexPageComponent.new(resources,
-                                           scope: 'observations',
-                                           title: 'Závady',
-                                           context_params:) do |c|
-  - c.with_search
-    = render FlexiAdmin::Components::Resources::AutocompleteComponent.new(scope: 'observations', action: :show)
-
-  = render FlexiAdmin::Components::Resources::IndexPageComponent.new(resources, context_params:)
