@@ -6,6 +6,11 @@ module FlexiAdmin::Controllers::ResourcesController
 
   included do
     before_action :context_params
+
+    rescue_from CanCan::AccessDenied do |exception|
+      flash[:error] = FlexiAdmin::Models::Toast.new(exception.message)
+      render_toasts
+    end
   end
 
   def render_toasts
