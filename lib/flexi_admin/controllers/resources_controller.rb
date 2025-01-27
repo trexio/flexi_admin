@@ -75,7 +75,7 @@ module FlexiAdmin::Controllers::ResourcesController
   def edit
     @resource = resource_class.find(params[:id])
 
-    render_edit_resource_form(disabled: context_params.form_disabled)
+    render_edit_resource_form(disabled: disabled?(context_params.form_disabled))
   end
 
   def update
@@ -90,19 +90,19 @@ module FlexiAdmin::Controllers::ResourcesController
     result = update_service.run(resource: @resource, params: resource_params)
 
     if result.valid?
-      render_edit_resource_form(disabled: true)
+      render_edit_resource_form(disabled: disabled?(true))
     else
-      render_edit_resource_form(disabled: false)
+      render_edit_resource_form(disabled: disabled?(false))
     end
   end
 
   def render_edit_resource_form(disabled: true)
     respond_to do |format|
       format.html do
-        render turbo_stream: turbo_stream.replace(@resource.form_id, edit_form_component_instance(disabled))
+        render turbo_stream: turbo_stream.replace(@resource.form_id, edit_form_component_instance(disabled?(disabled)))
       end
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(@resource.form_id, edit_form_component_instance(disabled))
+        render turbo_stream: turbo_stream.replace(@resource.form_id, edit_form_component_instance(disabled?(disabled)))
       end
     end
   end
@@ -164,7 +164,7 @@ module FlexiAdmin::Controllers::ResourcesController
   end
 
   def edit_form_component_instance(disabled)
-    [FlexiAdmin::NAMESPACE, "#{@resource.class.name}::Show::EditFormComponent"].join("::").constantize.new(@resource, disabled:)
+    [FlexiAdmin::NAMESPACE, "#{@resource.class.name}::Show::EditFormComponent"].join("::").constantize.new(@resource, disabled: disabled?(disabled))
   end
 
   def new_form_component_instance(resource)
@@ -196,5 +196,9 @@ module FlexiAdmin::Controllers::ResourcesController
 
   def fa_order
     context_params[:order]
+  end
+
+  def disabled?(form_disabled = false)
+    !current_ability&.can?(:update, resource_class) || form_disabled
   end
 end
