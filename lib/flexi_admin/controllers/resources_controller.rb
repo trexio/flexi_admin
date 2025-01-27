@@ -46,6 +46,8 @@ module FlexiAdmin::Controllers::ResourcesController
   end
 
   def create
+    authorize! :create, resource_class
+
     create_service = begin
       "#{resource_class.model_name.plural.camelize}::Services::Create".constantize
     rescue NameError
@@ -63,6 +65,7 @@ module FlexiAdmin::Controllers::ResourcesController
 
   def show
     @resource = resource_class.find(params[:id])
+    authorize! :show, @resource
 
     respond_to do |format|
       format.html
@@ -74,12 +77,14 @@ module FlexiAdmin::Controllers::ResourcesController
 
   def edit
     @resource = resource_class.find(params[:id])
+    authorize! :update, @resource
 
     render_edit_resource_form(disabled: disabled?(context_params.form_disabled))
   end
 
   def update
     @resource = resource_class.find(params[:id])
+    authorize! :update, @resource
 
     update_service = begin
       "#{resource_class.model_name.plural.camelize}::Services::Update".constantize
@@ -124,6 +129,7 @@ module FlexiAdmin::Controllers::ResourcesController
     # Unscoped is needed to get the resources that are not deleted, archived, etc.
     # It should be ok, since we control the ids in the frontend
     @resources = resource_class.unscoped.where(id: ids)
+    authorize! :edit, @resources
 
     bulk_processor = "#{params[:processor].gsub('-', '/').camelize}::Processor".constantize.new(@resources, params)
     result = bulk_processor.perform
