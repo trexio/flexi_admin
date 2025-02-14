@@ -21,6 +21,20 @@ module FlexiAdmin::Controllers::ResourcesController
     turbo_stream.append('toasts', partial: 'shared/toasts')
   end
 
+  def render_index(resources, target: nil)
+    target ||= context_params.frame
+    respond_to do |format|
+      format.html do
+        component_class = "Admin::#{resource_class.name}::IndexPageComponent".constantize
+        render component_class.new(resources, context_params:, scope: resource_class.to_s.downcase)
+      end
+      format.turbo_stream do
+        component_class = "Admin::#{resource_class.name}::ResourcesComponent".constantize
+        render turbo_stream: turbo_stream.replace(target, component_class.new(resources, context_params:, scope: resource_class.to_s.downcase))
+      end
+    end
+  end
+
   # Deprecated
   def reload_page
     render turbo_stream: [
@@ -73,7 +87,10 @@ module FlexiAdmin::Controllers::ResourcesController
     authorize! :show, @resource
 
     respond_to do |format|
-      format.html
+      format.html do
+        component ||= "Admin::#{resource_class.name}::Show::PageComponent".constantize
+        render component.new(@resource, context_params:, scope: resource_class.to_s.downcase)
+      end
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(context_params.frame)
       end
