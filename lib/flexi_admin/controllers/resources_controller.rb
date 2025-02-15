@@ -11,7 +11,7 @@ module FlexiAdmin::Controllers::ResourcesController
       flash[:error] = FlexiAdmin::Models::Toast.new(exception.message)
       respond_to do |format|
         format.html do
-          render :not_authorized
+          render 'shared/not_authorized'
         end
         format.turbo_stream do
           render_toasts
