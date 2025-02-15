@@ -9,7 +9,14 @@ module FlexiAdmin::Controllers::ResourcesController
 
     rescue_from CanCan::AccessDenied do |exception|
       flash[:error] = FlexiAdmin::Models::Toast.new(exception.message)
-      render_toasts
+      respond_to do |format|
+        format.html do
+          render :not_authorized
+        end
+        format.turbo_stream do
+          render_toasts
+        end
+      end
     end
   end
 
@@ -26,6 +33,7 @@ module FlexiAdmin::Controllers::ResourcesController
     respond_to do |format|
       format.html do
         component_class = "Admin::#{resource_class.name}::IndexPageComponent".constantize
+        puts "component_class: #{component_class}"
         render component_class.new(resources, context_params:, scope: resource_class.to_s.downcase)
       end
       format.turbo_stream do
