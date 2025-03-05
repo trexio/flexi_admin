@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-module FlexiAdmin::Controllers::ModalsController
+class FlexiAdmin::Controllers::ModalsController < ActionController::Base
+  include FlexiAdmin::Controllers::ResourcesController
+
   def show
     component_class = params[:kind].gsub("-", "/").camelize.constantize
 
