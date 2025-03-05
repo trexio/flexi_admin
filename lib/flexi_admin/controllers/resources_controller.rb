@@ -170,7 +170,13 @@ module FlexiAdmin::Controllers::ResourcesController
     @resources = resource_class.unscoped.where(id: ids)
     authorize! :edit, @resources if defined?(CanCan)
 
-    bulk_processor = namespaced_class(params[:processor].gsub('-', '/').camelize, "Processor").new(@resources, params)
+    # TODO: improve this
+    bulk_processor = if params[:processor].gsub('-', '/').camelize.include?(FlexiAdmin::Config.configuration.module_namespace)
+                      namespaced_class(params[:processor].gsub('-', '/').camelize, "Processor").new(@resources, params)
+    else
+      namespaced_class(FlexiAdmin::Config.configuration.module_namespace, params[:processor].gsub('-', '/').camelize, "Processor").new(@resources, params)
+    end
+
     result = bulk_processor.perform
 
     redirect_to_path result.path and return if result.result == :redirect
