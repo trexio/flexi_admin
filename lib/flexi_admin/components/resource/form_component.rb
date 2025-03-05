@@ -12,7 +12,11 @@ module FlexiAdmin::Components::Resource
     end
 
     def disabled
-      !helpers.current_ability&.can?(:update, resource) || @disabled
+      if defined?(CanCan)
+        !helpers.current_ability&.can?(:update, resource) || @disabled
+      else
+        @disabled
+      end
     end
   end
 end

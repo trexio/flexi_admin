@@ -2,7 +2,7 @@
   - if disabled && data_list?
     = value
   - elsif disabled && !data_list?
-      a href="#{resource_path(resource)}" data-turbo-frame="_top" = resource&.ac_title
+      a href="#{resource_path(resource)}" data-turbo-frame="_top" = resource&.try(:ac_title) || resource&.try(:title)
       /= helpers.link_to resource&.ac_title, resource_path(resource), data: { turbo_frame: '_top' }
   - else
     .input-group style="width: #{width || '100%'}"

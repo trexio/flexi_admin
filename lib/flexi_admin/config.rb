@@ -3,10 +3,7 @@
 module FlexiAdmin
   class Config
     class Store
-      attr_accessor :chat_client, :llm_client
-      attr_reader :functions
-
-      attr_writer :controller_class
+      attr_accessor :namespace, :module_namespace
     end
 
     class << self

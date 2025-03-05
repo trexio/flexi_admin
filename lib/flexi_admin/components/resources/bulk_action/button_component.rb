@@ -23,7 +23,14 @@ module FlexiAdmin::Components::Resources::BulkAction
     end
 
     def scoped_url_with_modal_id
-      main_app.admin_modals_path(kind: modal_class.modal_id, **context.to_params)
+      path = namespaced_path("flexi_admin", "modals")
+      if route_exists_in_main_app?(path)
+        main_app.send(path, kind: modal_class.modal_id,
+                            **context.to_params)
+      else
+        helpers.send(path,
+                     kind: modal_class.modal_id, **context.to_params)
+      end
     end
   end
 end

@@ -7,14 +7,17 @@ module FlexiAdmin::Controllers::ResourcesController
   included do
     before_action :context_params
 
-    rescue_from CanCan::AccessDenied do |exception|
-      flash[:error] = FlexiAdmin::Models::Toast.new(exception.message)
-      respond_to do |format|
-        format.html do
-          render 'shared/not_authorized'
-        end
-        format.turbo_stream do
-          render_toasts
+    if defined?(CanCan::AccessDenied)
+      rescue_from CanCan::AccessDenied do |exception|
+        flash[:error] = FlexiAdmin::Models::Toast.new(exception.message)
+        respond_to do |format|
+          format.html do
+            render 'shared/not_authorized'
+          end
+
+          format.turbo_stream do
+            render_toasts
+          end
         end
       end
     end
@@ -32,12 +35,12 @@ module FlexiAdmin::Controllers::ResourcesController
     target ||= context_params.frame
     respond_to do |format|
       format.html do
-        component_class = "Admin::#{resource_class.name}::IndexPageComponent".constantize
+        component_class = namespaced_class('namespace', resource_class.name, "IndexPageComponent")
         puts "component_class: #{component_class}"
         render component_class.new(resources, context_params:, scope: resource_class.to_s.downcase)
       end
       format.turbo_stream do
-        component_class = "Admin::#{resource_class.name}::ResourcesComponent".constantize
+        component_class = namespaced_class('namespace', resource_class.name, "ResourcesComponent")
         render turbo_stream: turbo_stream.replace(target, component_class.new(resources, context_params:, scope: resource_class.to_s.downcase))
       end
     end
@@ -73,10 +76,10 @@ module FlexiAdmin::Controllers::ResourcesController
   end
 
   def create
-    authorize! :create, resource_class
+    authorize! :create, resource_class if defined?(CanCan)
 
     create_service = begin
-      "#{resource_class.model_name.plural.camelize}::Services::Create".constantize
+      namespaced_class('namespace', resource_class.model_name.plural.camelize, "Services", "Create")
     rescue NameError
       FlexiAdmin::Services::CreateResource
     end
@@ -84,7 +87,13 @@ module FlexiAdmin::Controllers::ResourcesController
     result = create_service.run(resource_class:, params: create_params)
 
     if result.valid?
-      redirect_to_path polymorphic_path([:admin, result.resource])
+      path_segments = if FlexiAdmin::Config.configuration.namespace.present?
+        [FlexiAdmin::Config.configuration.namespace.to_sym, result.resource]
+      else
+        result.resource
+      end
+
+      redirect_to_path path_segments
     else
       render_new_resource_form(result.resource)
     end
@@ -92,11 +101,11 @@ module FlexiAdmin::Controllers::ResourcesController
 
   def show
     @resource = resource_class.find(params[:id])
-    authorize! :show, @resource
+    authorize! :show, @resource if defined?(CanCan)
 
     respond_to do |format|
       format.html do
-        component ||= "Admin::#{resource_class.name}::Show::PageComponent".constantize
+        component ||= namespaced_class('namespace', resource_class.name, "Show", "PageComponent")
         render component.new(@resource, context_params:, scope: resource_class.to_s.downcase)
       end
       format.turbo_stream do
@@ -107,17 +116,17 @@ module FlexiAdmin::Controllers::ResourcesController
 
   def edit
     @resource = resource_class.find(params[:id])
-    authorize! :update, @resource
+    authorize! :update, @resource if defined?(CanCan)
 
     render_edit_resource_form(disabled: disabled?(context_params.form_disabled))
   end
 
   def update
     @resource = resource_class.find(params[:id])
-    authorize! :update, @resource
+    authorize! :update, @resource if defined?(CanCan)
 
     update_service = begin
-      "#{resource_class.model_name.plural.camelize}::Services::Update".constantize
+      namespaced_class('namespace', 'namespace',"#{resource_class.model_name.plural.camelize}", "Services", "Update")
     rescue NameError
       FlexiAdmin::Services::UpdateResource
     end
@@ -159,9 +168,9 @@ module FlexiAdmin::Controllers::ResourcesController
     # Unscoped is needed to get the resources that are not deleted, archived, etc.
     # It should be ok, since we control the ids in the frontend
     @resources = resource_class.unscoped.where(id: ids)
-    authorize! :edit, @resources
+    authorize! :edit, @resources if defined?(CanCan)
 
-    bulk_processor = "#{params[:processor].gsub('-', '/').camelize}::Processor".constantize.new(@resources, params)
+    bulk_processor = namespaced_class('namespace', params[:processor].gsub('-', '/').camelize, "Processor").new(@resources, params)
     result = bulk_processor.perform
 
     redirect_to_path result.path and return if result.result == :redirect
@@ -189,8 +198,9 @@ module FlexiAdmin::Controllers::ResourcesController
                             .order(*context_params.params[:ac_fields].map(&:to_sym))
                             .pluck(*context_params.params[:ac_fields].map(&:to_sym))
                             .uniq
+
     render FlexiAdmin::Components::Shared::Autocomplete::ResultsComponent.new(results:,
-                                                                         context_params:), layout: false
+                                                                              context_params:), layout: false
   end
 
   private
@@ -200,11 +210,11 @@ module FlexiAdmin::Controllers::ResourcesController
   end
 
   def edit_form_component_instance(disabled)
-    [FlexiAdmin::NAMESPACE, "#{@resource.class.name}::Show::EditFormComponent"].join("::").constantize.new(@resource, disabled: disabled?(disabled))
+    namespaced_class('namespace', "#{@resource.class.name}", "Show", "EditFormComponent").new(@resource, disabled: disabled?(disabled))
   end
 
   def new_form_component_instance(resource)
-    "#{resource.class.name}::NewFormComponent".constantize.new(resource, parent: parent_instance)
+    namespaced_class('namespace', "#{resource.class.name}", "NewFormComponent").new(resource, parent: parent_instance)
   end
 
   def locate_resource(encoded_gid)
@@ -235,6 +245,20 @@ module FlexiAdmin::Controllers::ResourcesController
   end
 
   def disabled?(form_disabled = false)
-    !current_ability&.can?(:update, resource_class) || form_disabled
+    if defined?(CanCan)
+      !current_ability&.can?(:update, resource_class) || form_disabled
+    else
+      form_disabled
+    end
+  end
+
+  def namespaced_class(*segments)
+    config_namespace = FlexiAdmin::Config.configuration.namespace&.camelize
+
+    modules = segments.compact.map do |segment|
+      segment == 'namespace' ? config_namespace : segment
+    end.compact
+
+    modules.join("::").constantize
   end
 end

@@ -10,7 +10,10 @@ module FlexiAdmin::Components::Helpers::ResourceHelper
       fa_parent: parent&.gid_param,
       ac_fields: fields
     }
-    main_app.send("autocomplete_admin_#{scope_plural}_path", params: payload)
+    path = namespaced_path('autocomplete', 'namespace', scope_plural)
+    route_exists_in_main_app?(path) ? main_app.send(path, params: payload) : helpers.send(path, params: payload)
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def datalist_path(action:, fields:, parent: nil)
@@ -19,41 +22,64 @@ module FlexiAdmin::Components::Helpers::ResourceHelper
       ac_fields: fields
     }
 
-    main_app.send("datalist_admin_#{scope_plural}_path", params: payload)
+    path = namespaced_path('datalist', 'namespace', scope_plural)
+    route_exists_in_main_app?(path) ? main_app.send(path, params: payload) : helpers.send(path, params: payload)
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def edit_resource_path(resource, **params)
-    main_app.send("edit_admin_#{scope_singular}_path", resource, params:)
+    path = namespaced_path('edit', 'namespace', scope_singular)
+    route_exists_in_main_app?(path) ? main_app.send(path, resource, params:) : helpers.send(path, resource, params:)
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def bulk_action_path(scope, **params)
     raise 'Scope is not defined' if scope.blank?
 
-    main_app.send("bulk_action_admin_#{scope}_path", params:)
+    path = namespaced_path('bulk_action', 'namespace', scope)
+    route_exists_in_main_app?(path) ? main_app.send(path, params:) : helpers.send(path, params:)
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def resource_path(resource, **params)
-    main_app.send("admin_#{scope_singular}_path", resource, params:)
+    path = namespaced_path('namespace', scope_singular)
+    route_exists_in_main_app?(path) ? main_app.send(path, resource, params:) : helpers.send(path, resource, params:)
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def resource__path
-    "admin_#{scope_singular}_path"
+    namespaced_path('namespace', scope_singular)
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def resources_path(**params)
-    main_app.send("admin_#{scope_plural}_path", params:)
+    path = namespaced_path('namespace', scope_plural)
+    route_exists_in_main_app?(path) ? main_app.send(path, params:) : helpers.send(path, params:)
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def resource_input_name
     "#{scope_singular}_id"
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def scope_plural
     scope.gsub('/', '_')
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def scope_singular
     scope.singularize
+  # rescue => e
+  #   binding.pry if Rails.env.development?
   end
 
   def scope

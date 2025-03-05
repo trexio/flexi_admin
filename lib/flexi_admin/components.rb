@@ -34,6 +34,7 @@ require_relative "components/helpers/url_helper"
 require_relative "components/helpers/resource_helper"
 require_relative "components/helpers/selectable"
 require_relative "components/helpers/value_formatter"
+require_relative "components/helpers/frontend_helper"
 
 require_relative "components/resource/form_mixin"
 

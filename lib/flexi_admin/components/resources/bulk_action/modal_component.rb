@@ -32,7 +32,12 @@ module FlexiAdmin::Components::Resources::BulkAction
 
     # /observation_images/bulk_action
     def self.path
-      resource = (self.class_name&.to_s || to_s).split('::').first.underscore.gsub('/', '-')
+      class_name = self.class_name&.to_s || to_s
+      resource = if class_name.downcase.start_with?(FlexiAdmin::Config.configuration.namespace.downcase)
+        class_name.split('::')[1].underscore.gsub('/', '-')
+      else
+        class_name.underscore.gsub('/', '-')
+      end
       "/#{resource.pluralize}/bulk_action"
     end
 
