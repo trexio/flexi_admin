@@ -171,6 +171,7 @@ module FlexiAdmin::Controllers::ResourcesController
     authorize! :edit, @resources if defined?(CanCan)
 
     # TODO: improve this
+    params.merge!(current_user: current_user)
     bulk_processor = if params[:processor].gsub('-', '/').camelize.include?(FlexiAdmin::Config.configuration.module_namespace)
                       namespaced_class(params[:processor].gsub('-', '/').camelize, "Processor").new(@resources, params)
     else
