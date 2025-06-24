@@ -40,21 +40,21 @@ module FlexiAdmin::Components::Resource
       field = render_select(attr_name, value:, options:, **html_options)
       field_wrapper = render_field_wrapper(field, attr_name)
 
-      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:)
+      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:, required: html_options[:required])
     end
 
     def button_select_field(attr_name, options:, label: nil, value: nil, **html_options)
       field = render_button_select(attr_name, options:, value:, disabled:, **html_options)
       field_wrapper = render_field_wrapper(field, attr_name)
 
-      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:)
+      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:, required: html_options[:required])
     end
 
     def text_field(attr_name, label: nil, value: nil, **html_options)
       field = text_field_tag(attr_name, value:, **html_options)
       field_wrapper = render_field_wrapper(field, attr_name)
 
-      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:)
+      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:, required: html_options[:required])
     end
 
     def text_field_tag(attr_name, value: nil, **html_options)
@@ -69,7 +69,7 @@ module FlexiAdmin::Components::Resource
       checkbox = checkbox_field_tag(attr_name, checked:, **html_options)
       field_wrapper = render_field_wrapper(checkbox, attr_name)
 
-      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:)
+      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:, required: html_options[:required])
     end
 
     def checkbox_field_tag(attr_name, checked: nil, **html_options)
@@ -99,14 +99,14 @@ module FlexiAdmin::Components::Resource
       field = render_standard_field(:date, attr_name, value, html_options.merge(style: 'max-width: 180px;'))
       field_wrapper = render_field_wrapper(field, attr_name)
 
-      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:)
+      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:, required: html_options[:required])
     end
 
     def datetime_field(attr_name, label: nil, value: nil, **html_options)
       field = render_standard_field(:datetime, attr_name, value, html_options.merge(style: 'max-width: 180px;'))
       field_wrapper = render_field_wrapper(field, attr_name)
 
-      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:)
+      inline ? field_wrapper : render_form_row(attr_name, field_wrapper, label:, required: html_options[:required])
     end
 
     # Trix field
@@ -256,11 +256,13 @@ module FlexiAdmin::Components::Resource
                                                                          **html_options))
     end
 
-    def render_form_row(attr_name, field_html, label:, **html_options)
+    def render_form_row(attr_name, field_html, label:, required: false, **html_options)
       label ||= attr_name.to_s.humanize unless label == false
 
       content_tag(:div, html_options.merge(class: 'form-row')) do
-        concat content_tag(:div, class: 'col-12 col-md-3') { label_tag(attr_name, label) } unless label == false
+        lbl = label
+        lbl += ' *' if required && !disabled
+        concat content_tag(:div, class: 'col-12 col-md-3') { label_tag(attr_name, lbl) } unless label == false
         concat content_tag(:div, class: inline ? 'col-12 col-md-9 inline-field-wrapper' : 'col-12 col-md-9') {
                 field_html
               }
