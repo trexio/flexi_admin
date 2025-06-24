@@ -178,6 +178,7 @@ module FlexiAdmin::Components::Resource
       content = []
       input_classes = 'form-control'
       input_classes += ' is-invalid' if resource.present? && attr_name.present? && resource.errors[attr_name].present?
+
       if type != :submit
         content << content_tag(:input, nil,
                               {
@@ -185,9 +186,9 @@ module FlexiAdmin::Components::Resource
                                 name: attr_name,
                                 value: val,
                                 class: input_classes,
-                                data:
-                              }.merge(html_options)
-                                .merge(disabled:))
+                                data:,
+                                disabled: html_options[:disabled] || disabled
+                              }.merge(html_options.except(:disabled)))
       end
 
       content.join.html_safe
