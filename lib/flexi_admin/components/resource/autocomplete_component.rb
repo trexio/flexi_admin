@@ -11,9 +11,11 @@ module FlexiAdmin::Components::Resource
 
     def initialize(resource = nil, scope:, fields: [:title],
                   action: :select, parent: nil, path: nil,
-                  value: nil, disabled_empty_custom_message: nil, **html_options)
+                  value: nil, disabled_empty_custom_message: nil,
+                  target_controller: nil, **html_options)
       @resource = resource
       @scope = scope
+      @target_controller = target_controller
       @parent = parent
       @fields = fields
       @path = path
@@ -25,7 +27,21 @@ module FlexiAdmin::Components::Resource
       @required = html_options[:required]
       @style = html_options.delete(:style)
       @disabled = html_options.key?(:disabled) ? html_options[:disabled] : false
-      @name = html_options[:name] || resource_input_name
+
+      # Set @name - for custom scopes (Proc), we need either explicit name or target_controller
+      if scope.is_a?(Proc)
+        if html_options[:name].present?
+          @name = html_options[:name]
+        elsif target_controller.present?
+          # Infer name from target_controller (e.g., 'users' -> 'user_id')
+          @name = "#{target_controller.to_s.singularize}_id"
+        else
+          raise ArgumentError, 'When using a Proc scope, you must provide either :name in html_options or :target_controller'
+        end
+      else
+        @name = html_options[:name] || resource_input_name
+      end
+
       @disabled_empty_custom_message = disabled_empty_custom_message || 'žádný zdroj'
 
       validate_action!
@@ -70,9 +86,9 @@ module FlexiAdmin::Components::Resource
 
       case action
       when :input
-        datalist_path(action: :input, parent:, fields:)
+        datalist_path(action: :input, parent: effective_parent, fields: fields)
       else
-        autocomplete_path(action:, parent:, fields:)
+        autocomplete_path(action: action, parent: effective_parent, fields: fields, custom_scope: custom_scope_value)
       end
     end
 
@@ -80,6 +96,18 @@ module FlexiAdmin::Components::Resource
       return if %i[select show input].include?(@action)
 
       raise "Invalid action: #{@action}"
+    end
+
+    def effective_parent
+      scope_is_custom? ? nil : parent
+    end
+
+    def scope_is_custom?
+      @scope.is_a?(Proc)
+    end
+
+    def custom_scope_value
+      scope_is_custom? ? @scope : nil
     end
   end
 end

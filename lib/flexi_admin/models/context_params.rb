@@ -14,7 +14,7 @@ module FlexiAdmin::Models
       view: 'fa_view',
       ac_action: 'ac_action', # autocomplete action
       ac_fields: { 'ac_fields': [] }, # autocomplete result fields
-      ac_path: 'ac_path' # autocomplete path for opening resource in new window
+      ac_path: 'ac_path', # autocomplete path for opening resource in new window
     }
 
     def self.permitted_params_keys
@@ -113,7 +113,7 @@ module FlexiAdmin::Models
     end
 
     def pagination
-      { page:, per_page: }
+      { page: page, per_page: per_page }
     end
 
     def sort
