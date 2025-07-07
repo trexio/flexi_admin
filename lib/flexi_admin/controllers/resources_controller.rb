@@ -37,11 +37,11 @@ module FlexiAdmin::Controllers::ResourcesController
       format.html do
         component_class = namespaced_class('namespace', resource_class.name, "IndexPageComponent")
         puts "component_class: #{component_class}"
-        render component_class.new(resources, context_params:, scope: resource_class.to_s.downcase)
+        render component_class.new(resources, context_params: context_params, scope: resource_class.to_s.downcase)
       end
       format.turbo_stream do
         component_class = namespaced_class('namespace', resource_class.name, "ResourcesComponent")
-        render turbo_stream: turbo_stream.replace(target, component_class.new(resources, context_params:, scope: resource_class.to_s.downcase))
+        render turbo_stream: turbo_stream.replace(target, component_class.new(resources, context_params: context_params, scope: resource_class.to_s.downcase))
       end
     end
   end
@@ -55,7 +55,7 @@ module FlexiAdmin::Controllers::ResourcesController
   end
 
   def redirect_to_path(path)
-    render turbo_stream: turbo_stream.append('system', partial: 'shared/redirect', locals: { path: })
+    render turbo_stream: turbo_stream.append('system', partial: 'shared/redirect', locals: { path: path })
   end
 
   def context_params
@@ -84,7 +84,7 @@ module FlexiAdmin::Controllers::ResourcesController
       FlexiAdmin::Services::CreateResource
     end
 
-    result = create_service.run(resource_class:, params: create_params)
+    result = create_service.run(resource_class:, params: resource_params)
 
     if result.valid?
       path_segments = if FlexiAdmin::Config.configuration.namespace.present?
@@ -188,8 +188,14 @@ module FlexiAdmin::Controllers::ResourcesController
   end
 
   def autocomplete(includes: nil)
-    base_query = resource_class.with_parent(parent_instance)
-                                .fulltext(params[:q])
+    base_query = if context_params.params[:custom_scope].present?
+                   # Handle custom scope passed from component
+                   deserialize_and_apply_custom_scope(resource_class, context_params.params[:custom_scope])
+                 else
+                   resource_class.with_parent(parent_instance)
+                 end
+
+    base_query = base_query.fulltext(params[:q])
     base_query = base_query.includes(includes) if includes.present?
     results_count = base_query.count
     results = base_query.limit(100)
@@ -267,5 +273,21 @@ module FlexiAdmin::Controllers::ResourcesController
     end.compact
 
     modules.join("::").constantize
+  end
+
+  def deserialize_and_apply_custom_scope(resource_class, scope_key)
+    custom_scope = FlexiAdmin::Components::Helpers::CustomScopeRegistry.get(scope_key)
+
+    return resource_class.all unless custom_scope
+
+    case custom_scope
+    when Proc
+      custom_scope.call(resource_class)
+    else
+      resource_class.all
+    end
+  rescue => e
+    Rails.logger.warn "Failed to apply custom scope: #{e.message}"
+    resource_class.all
   end
 end
